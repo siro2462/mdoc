@@ -1,0 +1,5 @@
+{
+  "name": "VS Code Mockup",
+  "description": "A visually appealing mockup of the Visual Studio Code editor interface, built with React and Tailwind CSS. It features a three-panel layout (File Explorer, Editor, Preview) and supports both light and dark themes.",
+  "requestFramePermissions": []
+}
