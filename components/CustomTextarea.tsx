@@ -18,6 +18,7 @@ export interface CustomTextareaRef {
   getCursorPosition: () => number;
   setCursorPosition: (position: number) => void;
   insertTextAtCursor: (text: string) => void;
+  textareaRef: React.RefObject<HTMLTextAreaElement>; // Expose textareaRef
 }
 
 const CustomTextarea = forwardRef<CustomTextareaRef, CustomTextareaProps>(
@@ -107,7 +108,8 @@ const CustomTextarea = forwardRef<CustomTextareaRef, CustomTextareaProps>(
             }
           }, 0);
         }
-      }
+      },
+      textareaRef: textareaRef // Expose textareaRef
     }));
 
     // base64文字列を折りたたみ表示用のテキストに変換

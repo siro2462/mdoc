@@ -58,11 +58,11 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
   hasUnsavedChanges = false,
   onCloseFile
 }) => {
-  // content stateを削除し、activeFile.contentを直接使用
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const textareaRef = useRef<CustomTextareaRef>(null);
   const editorContainerRef = useRef<HTMLDivElement>(null);
+  const lineNumbersRef = useRef<HTMLDivElement>(null);
 
   // アクティブファイルが変更されたときにlastSavedをリセット
   useEffect(() => {
@@ -74,6 +74,26 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     }
   }, [activeFile]);
 
+  // Scroll synchronization
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    const lineNumbers = lineNumbersRef.current;
+    if (textarea && lineNumbers) {
+      const handleScroll = () => {
+        const textareaElement = (textarea as any).textareaRef.current;
+        if (textareaElement) {
+          lineNumbers.scrollTop = textareaElement.scrollTop;
+        }
+      };
+      const textareaElement = (textarea as any).textareaRef.current;
+      if (textareaElement) {
+        textareaElement.addEventListener('scroll', handleScroll);
+        return () => {
+          textareaElement.removeEventListener('scroll', handleScroll);
+        };
+      }
+    }
+  }, [activeFile]);
 
 
   // 自動保存機能
@@ -174,7 +194,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     }
   }, [handleImageUpload]);
 
-  const lineCount = activeFile?.content?.split('\n').length || 0;
+  const lineCount = activeFile?.content ? activeFile.content.split('\n').length : 0;
+  const lineNumbers = Array.from({ length: lineCount || 1 }, (_, i) => i + 1);
 
   return (
     <div ref={editorContainerRef} className="flex flex-col h-full bg-light-bg dark:bg-dark-bg">
@@ -193,16 +214,16 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                   Saved {lastSaved.toLocaleTimeString()}
                 </span>
               )}
-              <div className="ml-2 w-4 h-4 flex items-center justify-center">
+              <div className="ml-2 w-4 h-4 relative">
                 {hasUnsavedChanges ? (
                   <>
-                    <div className="group-hover:hidden flex items-center justify-center">
+                    <div className="group-hover:hidden absolute inset-0 flex items-center justify-center">
                       <div className="w-2 h-2 bg-orange-500 dark:bg-orange-400 rounded-full animate-pulse"></div>
                     </div>
                     {onCloseFile && (
                       <button
                         onClick={onCloseFile}
-                        className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100 absolute"
+                        className="absolute inset-0 flex items-center justify-center p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100"
                         title="Close file"
                       >
                         <Icon name="chrome-close" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -212,7 +233,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                 ) : onCloseFile ? (
                   <button
                     onClick={onCloseFile}
-                    className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100"
+                    className="absolute inset-0 flex items-center justify-center p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100"
                     title="Close file"
                   >
                     <Icon name="chrome-close" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -227,13 +248,22 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
       {/* Code Editor */}
       <div className="flex-1 flex font-mono text-sm overflow-hidden min-h-0">
         {/* Code Content */}
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative overflow-y-auto flex">
+          {/* Line Numbers */}
+          <div 
+            ref={lineNumbersRef}
+            className="flex-shrink-0 w-12 p-2 pl-4 text-right text-light-text-secondary dark:text-dark-text-secondary bg-transparent select-none overflow-hidden"
+          >
+            {lineNumbers.map((line) => (
+              <span key={line} className="block leading-6 h-6">{line}</span>
+            ))}
+          </div>
           <CustomTextarea
             ref={textareaRef}
             value={activeFile?.content || ''}
             onChange={handleContentChange}
             onPaste={handlePaste}
-            className="w-full h-full p-2 bg-transparent text-light-text dark:text-dark-text resize-none outline-none border-none overflow-y-auto scrollbar-auto-hide"
+            className="flex-1 h-full p-2 bg-transparent text-light-text dark:text-dark-text resize-none outline-none border-none scrollbar-auto-hide leading-6"
             placeholder={activeFile ? "Start typing your markdown... (Ctrl+V for images)" : "No file selected"}
           />
         </div>
