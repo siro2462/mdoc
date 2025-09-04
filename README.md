@@ -1,16 +1,14 @@
 <div align="center">
-  <img width="1200" height="475" alt="MDoc Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-  
   # MDoc - Modern Markdown Editor
   
-  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/your-username/mdoc/releases)
+  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/siro2462/mdoc/releases)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-  [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/your-username/mdoc/releases)
+  [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/siro2462/mdoc/releases)
   [![Electron](https://img.shields.io/badge/Electron-38.0.0-9cf.svg)](https://electronjs.org/)
   
   **A modern, feature-rich Markdown editor built with Electron, React, and TypeScript**
   
-  [📥 Download Latest Release](https://github.com/your-username/mdoc/releases/latest) | [📖 Documentation](#documentation) | [🐛 Report Bug](https://github.com/your-username/mdoc/issues) | [💡 Request Feature](https://github.com/your-username/mdoc/issues)
+  [📥 Download Latest Release](https://github.com/siro2462/mdoc/releases/latest) | [📖 Documentation](#documentation) | [🐛 Report Bug](https://github.com/siro2462/mdoc/issues) | [💡 Request Feature](https://github.com/siro2462/mdoc/issues)
 </div>
 
 ---
@@ -55,7 +53,7 @@
 
 ### 📥 **Download & Install**
 
-1. **Download the installer** from [Releases](https://github.com/your-username/mdoc/releases/latest)
+1. **Download the installer** from [Releases](https://github.com/siro2462/mdoc/releases/latest)
 2. **Run `MDoc Setup 1.0.0.exe`**
 3. **Follow the installation wizard**
 4. **Launch MDoc** from your desktop or start menu
@@ -191,7 +189,7 @@ graph TB
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/mdoc.git
+git clone https://github.com/siro2462/mdoc.git
 cd mdoc
 
 # Install dependencies
@@ -269,8 +267,8 @@ mdoc/
 
 ### 📞 **Getting Help**
 
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/your-username/mdoc/issues)
-- **💡 Feature Requests**: [GitHub Discussions](https://github.com/your-username/mdoc/discussions)
+- **🐛 Bug Reports**: [GitHub Issues](https://github.com/siro2462/mdoc/issues)
+- **💡 Feature Requests**: [GitHub Discussions](https://github.com/siro2462/mdoc/discussions)
 - **📧 Contact**: [Email Support](mailto:support@mdoc.app)
 
 ---
@@ -309,8 +307,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <p>Made with ❤️ by the MDoc Team</p>
   <p>
-    <a href="https://github.com/your-username/mdoc">⭐ Star us on GitHub</a> •
-    <a href="https://github.com/your-username/mdoc/issues">🐛 Report Bug</a> •
-    <a href="https://github.com/your-username/mdoc/discussions">💬 Discuss</a>
+    <a href="https://github.com/siro2462/mdoc">⭐ Star us on GitHub</a> •
+    <a href="https://github.com/siro2462/mdoc/issues">🐛 Report Bug</a> •
+    <a href="https://github.com/siro2462/mdoc/discussions">💬 Discuss</a>
   </p>
 </div>

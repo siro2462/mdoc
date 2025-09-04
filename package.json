@@ -5,13 +5,13 @@
   "description": "A modern, feature-rich Markdown editor built with Electron, React, and TypeScript. Edit Markdown files with live preview, export to HTML, and manage projects with an intuitive file tree interface.",
   "keywords": ["markdown", "editor", "electron", "react", "typescript", "preview", "html", "export"],
   "author": "MDoc Team",
-  "homepage": "https://github.com/your-username/mdoc#readme",
+  "homepage": "https://github.com/siro2462/mdoc#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/mdoc.git"
+    "url": "https://github.com/siro2462/mdoc.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/mdoc/issues"
+    "url": "https://github.com/siro2462/mdoc/issues"
   },
   "license": "MIT",
   "main": "electron/main.cjs",
