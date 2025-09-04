@@ -1,143 +1,143 @@
-# Contributing to MDoc
+# MDocへの貢献
 
-Thank you for your interest in contributing to MDoc! This document provides guidelines and information for contributors.
+MDocへの貢献にご興味をお持ちいただき、ありがとうございます！このドキュメントでは、貢献者のためのガイドラインと情報を提供します。
 
-## 🚀 Getting Started
+## 🚀 はじめに
 
-### Prerequisites
+### 前提条件
 
 - **Node.js** 18+ 
 - **npm** 8+
 - **Git** 2.0+
-- **Windows 10/11** (for development)
+- **Windows 10/11**（開発用）
 
-### Development Setup
+### 開発環境セットアップ
 
-1. **Fork the repository**
+1. **リポジトリをフォーク**
    ```bash
-   # Fork on GitHub, then clone your fork
+   # GitHubでフォークしてから、フォークをクローン
    git clone https://github.com/your-username/mdoc.git
    cd mdoc
    ```
 
-2. **Install dependencies**
+2. **依存関係をインストール**
    ```bash
    npm install
    ```
 
-3. **Start development server**
+3. **開発サーバーを起動**
    ```bash
    npm run dev
    ```
 
-4. **Run Electron in development mode**
+4. **開発モードでElectronを実行**
    ```bash
    npm run electron:dev
    ```
 
-## 🛠️ Development Guidelines
+## 🛠️ 開発ガイドライン
 
-### Code Style
+### コードスタイル
 
-- **TypeScript** - Use TypeScript for all new code
-- **ESLint** - Follow the project's ESLint configuration
-- **Prettier** - Use Prettier for code formatting
-- **Naming** - Use descriptive, camelCase names
+- **TypeScript** - すべての新しいコードでTypeScriptを使用
+- **ESLint** - プロジェクトのESLint設定に従う
+- **Prettier** - コードフォーマットにPrettierを使用
+- **命名** - 説明的でcamelCaseの名前を使用
 
-### Component Guidelines
+### コンポーネントガイドライン
 
-- **Functional components** - Use React functional components with hooks
-- **TypeScript interfaces** - Define proper interfaces for props
-- **Error boundaries** - Wrap components in error boundaries when appropriate
-- **Accessibility** - Follow WCAG guidelines for accessibility
+- **関数コンポーネント** - React関数コンポーネントとhooksを使用
+- **TypeScriptインターフェース** - プロパティの適切なインターフェースを定義
+- **エラーバウンダリ** - 適切な場合にコンポーネントをエラーバウンダリでラップ
+- **アクセシビリティ** - アクセシビリティのWCAGガイドラインに従う
 
-### File Structure
+### ファイル構造
 
 ```
 src/
-├── components/          # React components
-├── assets/             # Static assets
-├── utils/              # Utility functions
-└── types.ts           # TypeScript definitions
+├── components/          # Reactコンポーネント
+├── assets/             # 静的アセット
+├── utils/              # ユーティリティ関数
+└── types.ts           # TypeScript定義
 ```
 
-## 🐛 Bug Reports
+## 🐛 バグ報告
 
-### Before Reporting
+### 報告前に
 
-1. **Check existing issues** - Search for similar issues
-2. **Test latest version** - Ensure you're using the latest release
-3. **Gather information** - Collect relevant details
+1. **既存のイシューを確認** - 類似のイシューを検索
+2. **最新版をテスト** - 最新リリースを使用していることを確認
+3. **情報を収集** - 関連する詳細を収集
 
-### Bug Report Template
+### バグ報告テンプレート
 
 ```markdown
-## Bug Description
-Brief description of the bug
+## バグの説明
+バグの簡潔で明確な説明
 
-## Steps to Reproduce
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## 再現手順
+1. '...'に移動
+2. '....'をクリック
+3. '....'までスクロール
+4. エラーを確認
 
-## Expected Behavior
-What you expected to happen
+## 期待される動作
+何が起こることを期待していたか
 
-## Actual Behavior
-What actually happened
+## 実際の動作
+実際に何が起こったか
 
-## Environment
-- OS: [e.g. Windows 11]
-- MDoc Version: [e.g. 1.0.0]
-- Node.js Version: [e.g. 18.17.0]
+## 環境
+- OS: [例: Windows 11]
+- MDocバージョン: [例: 1.0.0]
+- Node.jsバージョン: [例: 18.17.0]
 
-## Additional Context
-Any other context about the problem
+## 追加のコンテキスト
+問題に関するその他のコンテキスト
 ```
 
-## 💡 Feature Requests
+## 💡 機能要望
 
-### Before Requesting
+### 要望前に
 
-1. **Check existing features** - Ensure the feature doesn't already exist
-2. **Search discussions** - Look for similar feature requests
-3. **Consider scope** - Ensure the feature fits the project's scope
+1. **既存の機能を確認** - 機能が既に存在しないことを確認
+2. **ディスカッションを検索** - 類似の機能要望を探す
+3. **スコープを考慮** - 機能がプロジェクトのスコープに適合することを確認
 
-### Feature Request Template
+### 機能要望テンプレート
 
 ```markdown
-## Feature Description
-Brief description of the feature
+## 機能の説明
+機能の簡潔で明確な説明
 
-## Problem Statement
-What problem does this feature solve?
+## 問題の説明
+この機能が解決する問題は何か？
 
-## Proposed Solution
-How would you like this feature to work?
+## 提案された解決策
+この機能がどのように動作することを望むか？
 
-## Alternatives Considered
-What other solutions have you considered?
+## 検討した代替案
+他に検討した解決策はあるか？
 
-## Additional Context
-Any other context about the feature request
+## 追加のコンテキスト
+機能要望に関するその他のコンテキスト
 ```
 
-## 🔧 Pull Request Process
+## 🔧 プルリクエストプロセス
 
-### Before Submitting
+### 提出前に
 
-1. **Create a branch** - Use a descriptive branch name
+1. **ブランチを作成** - 説明的なブランチ名を使用
    ```bash
    git checkout -b feature/amazing-feature
    ```
 
-2. **Make changes** - Implement your changes
-3. **Test thoroughly** - Ensure your changes work correctly
-4. **Update documentation** - Update relevant documentation
-5. **Commit changes** - Use clear, descriptive commit messages
+2. **変更を実装** - 変更を実装
+3. **十分にテスト** - 変更が正しく動作することを確認
+4. **ドキュメントを更新** - 関連するドキュメントを更新
+5. **変更をコミット** - 明確で説明的なコミットメッセージを使用
 
-### Commit Message Format
+### コミットメッセージフォーマット
 
 ```
 type(scope): description
@@ -147,136 +147,136 @@ type(scope): description
 [optional footer]
 ```
 
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes
-- `refactor`: Code refactoring
-- `test`: Test changes
-- `chore`: Build process or auxiliary tool changes
+**タイプ:**
+- `feat`: 新機能
+- `fix`: バグ修正
+- `docs`: ドキュメント変更
+- `style`: コードスタイル変更
+- `refactor`: コードリファクタリング
+- `test`: テスト変更
+- `chore`: ビルドプロセスまたは補助ツールの変更
 
-**Examples:**
+**例:**
 ```
-feat(editor): add syntax highlighting for code blocks
-fix(export): resolve HTML export encoding issue
-docs(readme): update installation instructions
+feat(editor): コードブロックのシンタックスハイライトを追加
+fix(export): HTMLエクスポートのエンコーディング問題を解決
+docs(readme): インストール手順を更新
 ```
 
-### Pull Request Template
+### プルリクエストテンプレート
 
 ```markdown
-## Description
-Brief description of changes
+## 説明
+変更の簡潔な説明
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
+## 変更の種類
+- [ ] バグ修正
+- [ ] 新機能
+- [ ] 破壊的変更
+- [ ] ドキュメント更新
 
-## Testing
-- [ ] Tested on Windows 10
-- [ ] Tested on Windows 11
-- [ ] Tested with different file types
-- [ ] Tested export functionality
+## テスト
+- [ ] Windows 10でテスト済み
+- [ ] Windows 11でテスト済み
+- [ ] 異なるファイルタイプでテスト済み
+- [ ] エクスポート機能をテスト済み
 
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Self-review completed
-- [ ] Documentation updated
-- [ ] No breaking changes
+## チェックリスト
+- [ ] コードがプロジェクトのスタイルガイドラインに従っている
+- [ ] 自己レビューを完了した
+- [ ] ドキュメントを更新した
+- [ ] 破壊的変更はない
 ```
 
-## 🧪 Testing
+## 🧪 テスト
 
-### Manual Testing
+### 手動テスト
 
-1. **Basic functionality** - Test core features
-2. **Edge cases** - Test with unusual inputs
-3. **Performance** - Test with large files
-4. **Cross-platform** - Test on different Windows versions
+1. **基本機能** - コア機能をテスト
+2. **エッジケース** - 異常な入力でテスト
+3. **パフォーマンス** - 大きなファイルでテスト
+4. **クロスプラットフォーム** - 異なるWindowsバージョンでテスト
 
-### Test Scenarios
+### テストシナリオ
 
-- **File operations** - Open, edit, save files
-- **Export functionality** - Export to HTML
-- **Theme switching** - Light/dark mode
-- **Keyboard shortcuts** - All shortcuts work
-- **Error handling** - Graceful error handling
+- **ファイル操作** - ファイルの開く、編集、保存
+- **エクスポート機能** - HTMLへのエクスポート
+- **テーマ切り替え** - ライト/ダークモード
+- **キーボードショートカット** - すべてのショートカットが動作
+- **エラーハンドリング** - 適切なエラーハンドリング
 
-## 📝 Documentation
+## 📝 ドキュメント
 
-### Code Documentation
+### コードドキュメント
 
-- **JSDoc comments** - Document functions and classes
-- **README updates** - Update relevant documentation
-- **Type definitions** - Add proper TypeScript types
+- **JSDocコメント** - 関数とクラスをドキュメント化
+- **README更新** - 関連するドキュメントを更新
+- **型定義** - 適切なTypeScript型を追加
 
-### User Documentation
+### ユーザードキュメント
 
-- **Screenshots** - Add screenshots for new features
-- **Usage examples** - Provide clear examples
-- **Troubleshooting** - Update troubleshooting guides
+- **スクリーンショット** - 新機能のスクリーンショットを追加
+- **使用例** - 明確な例を提供
+- **トラブルシューティング** - トラブルシューティングガイドを更新
 
-## 🎨 Design Guidelines
+## 🎨 デザインガイドライン
 
-### UI/UX Principles
+### UI/UX原則
 
-- **Consistency** - Follow existing design patterns
-- **Accessibility** - Ensure accessibility compliance
-- **Responsiveness** - Design for different screen sizes
-- **Performance** - Optimize for smooth user experience
+- **一貫性** - 既存のデザインパターンに従う
+- **アクセシビリティ** - アクセシビリティ準拠を確保
+- **レスポンシブ** - 異なる画面サイズに対応
+- **パフォーマンス** - スムーズなユーザー体験を最適化
 
-### Icon Guidelines
+### アイコンガイドライン
 
-- **SVG format** - Use SVG for all icons
-- **Consistent style** - Follow the established icon style
-- **Appropriate size** - Use appropriate icon sizes
-- **Accessibility** - Include proper alt text
+- **SVG形式** - すべてのアイコンにSVGを使用
+- **一貫したスタイル** - 確立されたアイコンスタイルに従う
+- **適切なサイズ** - 適切なアイコンサイズを使用
+- **アクセシビリティ** - 適切なaltテキストを含める
 
-## 🚀 Release Process
+## 🚀 リリースプロセス
 
-### Version Numbering
+### バージョン番号
 
-- **Major** (1.0.0) - Breaking changes
-- **Minor** (1.1.0) - New features
-- **Patch** (1.0.1) - Bug fixes
+- **メジャー** (1.0.0) - 破壊的変更
+- **マイナー** (1.1.0) - 新機能
+- **パッチ** (1.0.1) - バグ修正
 
-### Release Checklist
+### リリースチェックリスト
 
-- [ ] All tests pass
-- [ ] Documentation updated
-- [ ] Changelog updated
-- [ ] Version bumped
-- [ ] Release notes prepared
+- [ ] すべてのテストがパス
+- [ ] ドキュメントが更新済み
+- [ ] チェンジログが更新済み
+- [ ] バージョンが更新済み
+- [ ] リリースノートが準備済み
 
-## 🤝 Community Guidelines
+## 🤝 コミュニティガイドライン
 
-### Code of Conduct
+### 行動規範
 
-- **Be respectful** - Treat everyone with respect
-- **Be constructive** - Provide constructive feedback
-- **Be patient** - Be patient with new contributors
-- **Be inclusive** - Welcome contributors from all backgrounds
+- **敬意を払う** - すべての人を尊重する
+- **建設的** - 建設的なフィードバックを提供
+- **忍耐強く** - 新しい貢献者に忍耐強く接する
+- **包括的** - すべての背景の貢献者を歓迎
 
-### Communication
+### コミュニケーション
 
-- **GitHub Issues** - Use for bug reports and feature requests
-- **GitHub Discussions** - Use for general discussion
-- **Pull Requests** - Use for code contributions
+- **GitHub Issues** - バグ報告と機能要望に使用
+- **GitHub Discussions** - 一般的な議論に使用
+- **プルリクエスト** - コード貢献に使用
 
-## 📞 Getting Help
+## 📞 ヘルプを求める
 
-- **GitHub Issues** - [Create an issue](https://github.com/your-username/mdoc/issues)
-- **GitHub Discussions** - [Start a discussion](https://github.com/your-username/mdoc/discussions)
-- **Email** - [Contact us](mailto:support@mdoc.app)
+- **GitHub Issues** - [イシューを作成](https://github.com/siro2462/mdoc/issues)
+- **GitHub Discussions** - [ディスカッションを開始](https://github.com/siro2462/mdoc/discussions)
+- **Email** - [お問い合わせ](mailto:support@mdoc.app)
 
-## 🙏 Recognition
+## 🙏 認識
 
-Contributors will be recognized in:
-- **README.md** - Contributor list
-- **Release notes** - Contribution acknowledgments
-- **GitHub** - Contributor statistics
+貢献者は以下で認識されます：
+- **README.md** - 貢献者リスト
+- **リリースノート** - 貢献の謝辞
+- **GitHub** - 貢献統計
 
-Thank you for contributing to MDoc! 🎉
+MDocへの貢献をありがとうございます！🎉

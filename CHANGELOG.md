@@ -1,133 +1,133 @@
-# Changelog
+# チェンジログ
 
-All notable changes to this project will be documented in this file.
+このプロジェクトのすべての重要な変更は、このファイルに記録されます。
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+フォーマットは[Keep a Changelog](https://keepachangelog.com/en/1.0.0/)に基づいており、
+このプロジェクトは[Semantic Versioning](https://semver.org/spec/v2.0.0.html)に準拠しています。
 
-## [Unreleased]
+## [未リリース]
 
-### Added
-- GitHub repository setup
-- Comprehensive documentation
-- Contributing guidelines
-- Architecture documentation
+### 追加
+- GitHubリポジトリセットアップ
+- 包括的なドキュメント
+- 貢献ガイドライン
+- アーキテクチャドキュメント
 
 ## [1.0.0] - 2024-09-04
 
-### Added
-- **Core Features**
-  - Modern Markdown editor with live preview
-  - Project folder management with file tree
-  - Real-time Markdown to HTML conversion
-  - Auto-save functionality (1 second delay)
-  - Export to single HTML file with embedded CSS
+### 追加
+- **コア機能**
+  - ライブプレビュー付きモダンMarkdownエディタ
+  - ファイルツリー付きプロジェクトフォルダ管理
+  - リアルタイムMarkdownからHTMLへの変換
+  - 自動保存機能（1秒遅延）
+  - CSS埋め込み単一HTMLファイルエクスポート
 
-- **User Interface**
-  - Resizable panels with drag-and-drop splitters
-  - Light/Dark mode theme switching
-  - Responsive layout design
-  - Intuitive file explorer with folder tree
-  - Monaco editor with syntax highlighting
+- **ユーザーインターフェース**
+  - ドラッグ&ドロップスプリッター付きリサイズ可能パネル
+  - ライト/ダークモードテーマ切り替え
+  - レスポンシブレイアウトデザイン
+  - フォルダツリー付き直感的ファイルエクスプローラー
+  - シンタックスハイライト付きMonacoエディタ
 
-- **Markdown Support**
-  - Full Markdown syntax support
-  - Code block syntax highlighting
-  - Table of Contents auto-generation
-  - Qiita-style rendering
-  - Support for headers, lists, links, images, tables, quotes
+- **Markdownサポート**
+  - 完全なMarkdown構文サポート
+  - コードブロックシンタックスハイライト
+  - 目次の自動生成
+  - Qiitaスタイルレンダリング
+  - 見出し、リスト、リンク、画像、テーブル、引用のサポート
 
-- **Technical Features**
-  - Electron-based desktop application
-  - React + TypeScript frontend
-  - Vite build system for fast development
-  - Tailwind CSS for styling
-  - SVG icon system with vite-plugin-svgr
-  - File system watching for real-time updates
+- **技術機能**
+  - Electronベースデスクトップアプリケーション
+  - React + TypeScriptフロントエンド
+  - 高速開発用Viteビルドシステム
+  - スタイリング用Tailwind CSS
+  - vite-plugin-svgr付きSVGアイコンシステム
+  - リアルタイム更新用ファイルシステム監視
 
-- **Export Capabilities**
-  - Single HTML file export
-  - Embedded CSS for portability
-  - Preserves all formatting and styling
-  - Works on any system without dependencies
+- **エクスポート機能**
+  - 単一HTMLファイルエクスポート
+  - ポータビリティ用埋め込みCSS
+  - すべてのフォーマットとスタイリングを保持
+  - 依存関係なしで任意のシステムで動作
 
-- **Performance Optimizations**
-  - Debounced auto-save to prevent excessive file writes
-  - Efficient file tree rendering
-  - Optimized Markdown parsing
-  - Memory-efficient component design
+- **パフォーマンス最適化**
+  - 過度なファイル書き込みを防ぐデバウンス自動保存
+  - 効率的なファイルツリーレンダリング
+  - 最適化されたMarkdownパース
+  - メモリ効率的なコンポーネントデザイン
 
-### Technical Details
-- **Frontend**: React 18.2.0 + TypeScript 5.8.2
-- **Desktop**: Electron 38.0.0
-- **Build**: Vite 5.4.0
-- **Styling**: Tailwind CSS
+### 技術詳細
+- **フロントエンド**: React 18.2.0 + TypeScript 5.8.2
+- **デスクトップ**: Electron 38.0.0
+- **ビルド**: Vite 5.4.0
+- **スタイリング**: Tailwind CSS
 - **Markdown**: markdown-it 14.0.0 + highlight.js 11.9.0
-- **Icons**: Custom SVG icons with vite-plugin-svgr
-- **Packaging**: electron-builder 25.1.0
+- **アイコン**: vite-plugin-svgr付きカスタムSVGアイコン
+- **パッケージング**: electron-builder 25.1.0
 
-### Security
-- Sandboxed renderer process
-- Secure IPC communication
-- SVG icon validation and allowlisting
-- No eval() usage to prevent code injection
-- Context isolation enabled
+### セキュリティ
+- サンドボックス化されたレンダラープロセス
+- セキュアなIPC通信
+- SVGアイコン検証とホワイトリスト
+- コードインジェクション防止のためeval()使用なし
+- コンテキスト分離有効
 
-### Installation
-- Windows NSIS installer
-- Desktop and Start Menu shortcuts
-- One-click installation process
-- Automatic uninstaller
+### インストール
+- Windows NSISインストーラー
+- デスクトップとスタートメニューショートカット
+- ワンクリックインストールプロセス
+- 自動アンインストーラー
 
 ## [0.1.0] - 2024-09-01
 
-### Added
-- Initial project setup
-- Basic Electron + React structure
-- File system integration
-- Markdown parsing foundation
-- Basic UI components
+### 追加
+- 初期プロジェクトセットアップ
+- 基本Electron + React構造
+- ファイルシステム統合
+- Markdownパース基盤
+- 基本UIコンポーネント
 
 ---
 
-## Release Notes
+## リリースノート
 
-### Version 1.0.0
-This is the first stable release of MDoc, featuring a complete Markdown editing experience with live preview, project management, and HTML export capabilities. The application is built with modern web technologies and packaged as a native desktop application for Windows.
+### バージョン 1.0.0
+これはMDocの最初の安定リリースで、ライブプレビュー、プロジェクト管理、HTMLエクスポート機能を備えた完全なMarkdown編集体験を提供します。アプリケーションはモダンなWeb技術で構築され、Windows用のネイティブデスクトップアプリケーションとしてパッケージ化されています。
 
-**Key Highlights:**
-- 🎯 **Complete Markdown Editor** - Full-featured editor with live preview
-- 📁 **Project Management** - Open and manage entire project folders
-- 🎨 **Modern UI** - Clean, responsive interface with theme support
-- ⚡ **Performance** - Fast, efficient, and memory-optimized
-- 🔒 **Security** - Secure architecture following best practices
-- 📦 **Easy Installation** - Simple Windows installer
+**主なハイライト:**
+- 🎯 **完全なMarkdownエディタ** - ライブプレビュー付きフル機能エディタ
+- 📁 **プロジェクト管理** - プロジェクトフォルダ全体を開いて管理
+- 🎨 **モダンUI** - テーマサポート付きクリーンでレスポンシブなインターフェース
+- ⚡ **パフォーマンス** - 高速、効率的、メモリ最適化
+- 🔒 **セキュリティ** - ベストプラクティスに従ったセキュアなアーキテクチャ
+- 📦 **簡単インストール** - シンプルなWindowsインストーラー
 
-**System Requirements:**
+**システム要件:**
 - Windows 10/11 (64-bit)
-- 4GB RAM minimum, 8GB recommended
-- 200MB available disk space
-- 1024x768 minimum display resolution
+- 4GB RAM以上、8GB推奨
+- 200MB以上の空きディスク容量
+- 1024x768以上の最小ディスプレイ解像度
 
-**What's Next:**
-- Plugin system for extensibility
-- Multi-window support
-- Cloud sync capabilities
-- Collaborative editing features
-- Mobile companion app
+**今後の予定:**
+- 拡張性のためのプラグインシステム
+- マルチウィンドウサポート
+- クラウド同期機能
+- 協調編集機能
+- モバイルコンパニオンアプリ
 
 ---
 
-## Contributing
+## 貢献
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to contribute to MDoc.
+私たちは貢献を歓迎します！MDocへの貢献方法の詳細は[貢献ガイド](CONTRIBUTING.md)をご覧ください。
 
-## Support
+## サポート
 
-- **Bug Reports**: [GitHub Issues](https://github.com/your-username/mdoc/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/your-username/mdoc/discussions)
-- **Documentation**: [Project Wiki](https://github.com/your-username/mdoc/wiki)
+- **バグ報告**: [GitHub Issues](https://github.com/siro2462/mdoc/issues)
+- **機能要望**: [GitHub Discussions](https://github.com/siro2462/mdoc/discussions)
+- **ドキュメント**: [プロジェクトWiki](https://github.com/siro2462/mdoc/wiki)
 
-## License
+## ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+このプロジェクトはMITライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。

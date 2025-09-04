@@ -1,106 +1,106 @@
 <div align="center">
-  # MDoc - Modern Markdown Editor
+  # MDoc - モダンMarkdownエディタ
   
   [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/siro2462/mdoc/releases)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
   [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/siro2462/mdoc/releases)
   [![Electron](https://img.shields.io/badge/Electron-38.0.0-9cf.svg)](https://electronjs.org/)
   
-  **A modern, feature-rich Markdown editor built with Electron, React, and TypeScript**
+  **Electron、React、TypeScriptで構築されたモダンで機能豊富なMarkdownエディタ**
   
-  [📥 Download Latest Release](https://github.com/siro2462/mdoc/releases/latest) | [📖 Documentation](#documentation) | [🐛 Report Bug](https://github.com/siro2462/mdoc/issues) | [💡 Request Feature](https://github.com/siro2462/mdoc/issues)
+  [📥 最新版をダウンロード](https://github.com/siro2462/mdoc/releases/latest) | [📖 ドキュメント](#ドキュメント) | [🐛 バグ報告](https://github.com/siro2462/mdoc/issues) | [💡 機能要望](https://github.com/siro2462/mdoc/issues)
 </div>
 
 ---
 
-## ✨ Features
+## ✨ 機能
 
-### 📁 **Project Management**
-- **Folder-based workflow** - Open entire project folders
-- **Smart file tree** - Automatically excludes `.gitignore` and `node_modules`
-- **Real-time file watching** - Detects changes in the file system
-- **Multi-file support** - Switch between multiple Markdown files seamlessly
+### 📁 **プロジェクト管理**
+- **フォルダベースのワークフロー** - プロジェクトフォルダ全体を開く
+- **スマートファイルツリー** - `.gitignore`や`node_modules`を自動除外
+- **リアルタイムファイル監視** - ファイルシステムの変更を検出
+- **マルチファイル対応** - 複数のMarkdownファイルをシームレスに切り替え
 
-### ✏️ **Advanced Editor**
-- **Real-time Markdown editing** with live preview
-- **Auto-save functionality** (saves after 1 second of inactivity)
-- **Monaco editor** with syntax highlighting
-- **Line numbers** and cursor position display
-- **Customizable themes** (Light/Dark mode)
+### ✏️ **高度なエディタ**
+- **リアルタイムMarkdown編集**とライブプレビュー
+- **自動保存機能**（1秒間の非アクティブ後に保存）
+- **Monacoエディタ**によるシンタックスハイライト
+- **行番号**とカーソル位置表示
+- **カスタマイズ可能なテーマ**（ライト/ダークモード）
 
-### 👁️ **Rich Preview**
-- **Live preview** with Qiita-style rendering
-- **Table of Contents** auto-generation
-- **Syntax highlighting** for code blocks
-- **Responsive design** that adapts to content
-- **Dark/Light mode** support
+### 👁️ **リッチプレビュー**
+- **ライブプレビュー**でQiitaスタイルレンダリング
+- **目次**の自動生成
+- **コードブロック**のシンタックスハイライト
+- **レスポンシブデザイン**でコンテンツに適応
+- **ダーク/ライトモード**対応
 
-### 💾 **Export & Sharing**
-- **Single HTML file export** with embedded CSS
-- **Preserves styling** and formatting
-- **Portable output** - works on any system
-- **Custom export templates**
+### 💾 **エクスポート・共有**
+- **単一HTMLファイルエクスポート**（CSS埋め込み）
+- **スタイリングとフォーマット**を保持
+- **ポータブル出力** - どのシステムでも動作
+- **カスタムエクスポートテンプレート**
 
-### 🎨 **Modern UI/UX**
-- **Resizable panels** with drag-and-drop splitters
-- **Intuitive navigation** with keyboard shortcuts
-- **Responsive layout** that works on different screen sizes
-- **Accessible design** following modern UI principles
-
----
-
-## 🚀 Quick Start
-
-### 📥 **Download & Install**
-
-1. **Download the installer** from [Releases](https://github.com/siro2462/mdoc/releases/latest)
-2. **Run `MDoc Setup 1.0.0.exe`**
-3. **Follow the installation wizard**
-4. **Launch MDoc** from your desktop or start menu
-
-### 🏃‍♂️ **First Steps**
-
-1. **Open a project folder** by clicking the 📁 button
-2. **Select a Markdown file** from the file tree
-3. **Start editing** - see live preview on the right
-4. **Export to HTML** using the 📥 button when ready
+### 🎨 **モダンUI/UX**
+- **リサイズ可能パネル**とドラッグ&ドロップスプリッター
+- **直感的なナビゲーション**とキーボードショートカット
+- **レスポンシブレイアウト**で様々な画面サイズに対応
+- **アクセシブルデザイン**でモダンUI原則に従う
 
 ---
 
-## 📋 System Requirements
+## 🚀 クイックスタート
 
-| Component | Requirement |
+### 📥 **ダウンロード・インストール**
+
+1. [リリース](https://github.com/siro2462/mdoc/releases/latest)からインストーラーをダウンロード
+2. `MDoc Setup 1.0.0.exe`を実行
+3. インストールウィザードに従う
+4. デスクトップまたはスタートメニューからMDocを起動
+
+### 🏃‍♂️ **最初のステップ**
+
+1. 📁ボタンをクリックしてプロジェクトフォルダを開く
+2. ファイルツリーからMarkdownファイルを選択
+3. 編集を開始 - 右側でライブプレビューを確認
+4. 準備ができたら📥ボタンでHTMLにエクスポート
+
+---
+
+## 📋 システム要件
+
+| コンポーネント | 要件 |
 |-----------|-------------|
 | **OS** | Windows 10/11 (64-bit) |
-| **RAM** | 4GB minimum, 8GB recommended |
-| **Storage** | 200MB available space |
-| **Display** | 1024x768 minimum resolution |
+| **RAM** | 4GB以上、8GB推奨 |
+| **ストレージ** | 200MB以上の空き容量 |
+| **ディスプレイ** | 1024x768以上の解像度 |
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ アーキテクチャ
 
 ```mermaid
 graph TB
-    subgraph "Frontend Layer"
-        A[React Components] --> B[TypeScript]
+    subgraph "フロントエンド層"
+        A[Reactコンポーネント] --> B[TypeScript]
         B --> C[Tailwind CSS]
-        C --> D[Vite Build System]
+        C --> D[Viteビルドシステム]
     end
     
-    subgraph "Electron Layer"
-        E[Main Process] --> F[Renderer Process]
-        F --> G[Preload Scripts]
-        G --> H[IPC Communication]
+    subgraph "Electron層"
+        E[メインプロセス] --> F[レンダラープロセス]
+        F --> G[プリロードスクリプト]
+        G --> H[IPC通信]
     end
     
-    subgraph "Core Features"
-        I[Markdown Parser] --> J[Syntax Highlighter]
-        J --> K[File System API]
-        K --> L[Export Engine]
+    subgraph "コア機能"
+        I[Markdownパーサー] --> J[シンタックスハイライター]
+        J --> K[ファイルシステムAPI]
+        K --> L[エクスポートエンジン]
     end
     
-    subgraph "External Dependencies"
+    subgraph "外部依存関係"
         M[markdown-it] --> N[highlight.js]
         N --> O[fs-extra]
         O --> P[electron-builder]
@@ -111,204 +111,226 @@ graph TB
     I --> M
 ```
 
-### 🔧 **Technology Stack**
+### 🔧 **技術スタック**
 
-| Layer | Technology | Purpose |
+| 層 | 技術 | 目的 |
 |-------|------------|---------|
-| **Frontend** | React 18 + TypeScript | UI components and state management |
-| **Styling** | Tailwind CSS | Responsive design and theming |
-| **Build Tool** | Vite | Fast development and optimized builds |
-| **Desktop** | Electron 38 | Cross-platform desktop app framework |
-| **Markdown** | markdown-it | Markdown parsing and rendering |
-| **Syntax** | highlight.js | Code syntax highlighting |
-| **Icons** | Custom SVG + vite-plugin-svgr | Scalable vector icons |
-| **Packaging** | electron-builder | Application packaging and distribution |
+| **フロントエンド** | React 18 + TypeScript | UIコンポーネントと状態管理 |
+| **スタイリング** | Tailwind CSS | レスポンシブデザインとテーマ |
+| **ビルドツール** | Vite | 高速開発と最適化ビルド |
+| **デスクトップ** | Electron 38 | クロスプラットフォームデスクトップアプリ |
+| **Markdown** | markdown-it | Markdownパースとレンダリング |
+| **シンタックス** | highlight.js | コードシンタックスハイライト |
+| **アイコン** | カスタムSVG + vite-plugin-svgr | スケーラブルベクターアイコン |
+| **パッケージング** | electron-builder | アプリケーション配布 |
 
 ---
 
-## 📖 Documentation
+## 📖 ドキュメント
 
-### 🎯 **Core Workflows**
+### 🎯 **コアワークフロー**
 
-#### **Opening a Project**
+#### **プロジェクトを開く**
 ```bash
-1. Click the 📁 "Open Folder" button
-2. Navigate to your project directory
-3. Select the folder containing Markdown files
-4. The file tree will populate automatically
+1. 📁「フォルダを開く」ボタンをクリック
+2. プロジェクトディレクトリに移動
+3. Markdownファイルを含むフォルダを選択
+4. ファイルツリーが自動的に読み込まれる
 ```
 
-#### **Editing Markdown**
+#### **Markdownを編集**
 ```bash
-1. Click on any .md file in the file tree
-2. Start typing in the editor panel
-3. Watch the live preview update in real-time
-4. Use keyboard shortcuts for efficiency
+1. ファイルツリーから任意の.mdファイルをクリック
+2. エディタパネルで入力開始
+3. 右側のライブプレビューでリアルタイム確認
+4. 効率化のためキーボードショートカットを使用
 ```
 
-#### **Exporting to HTML**
+#### **HTMLにエクスポート**
 ```bash
-1. Edit your Markdown content
-2. Click the 📥 "Export" button
-3. Choose export location (default: same folder)
-4. Open the generated HTML file in any browser
+1. Markdownコンテンツを編集
+2. 📥「エクスポート」ボタンをクリック
+3. エクスポート場所を選択（デフォルト：同じフォルダ）
+4. 生成されたHTMLファイルを任意のブラウザで開く
 ```
 
-### ⌨️ **Keyboard Shortcuts**
+### ⌨️ **キーボードショートカット**
 
-| Shortcut | Action |
+| ショートカット | アクション |
 |----------|--------|
-| `Ctrl + O` | Open project folder |
-| `Ctrl + S` | Save current file |
-| `Ctrl + E` | Export to HTML |
-| `Ctrl + D` | Toggle dark/light mode |
-| `Ctrl + F` | Find in editor |
-| `Ctrl + G` | Go to line |
-| `F11` | Toggle fullscreen |
+| `Ctrl + O` | プロジェクトフォルダを開く |
+| `Ctrl + S` | 現在のファイルを保存 |
+| `Ctrl + E` | HTMLにエクスポート |
+| `Ctrl + D` | ダーク/ライトモード切り替え |
+| `Ctrl + F` | エディタで検索 |
+| `Ctrl + G` | 行に移動 |
+| `F11` | フルスクリーン切り替え |
 
-### 📝 **Supported Markdown Features**
+### 📝 **対応Markdown機能**
 
-| Feature | Syntax | Example |
+| 機能 | 構文 | 例 |
 |---------|--------|---------|
-| **Headers** | `# ## ###` | `# Main Title` |
-| **Bold/Italic** | `**bold** *italic*` | `**Important** *Note*` |
-| **Lists** | `- * 1.` | `- Item 1` |
-| **Code** | `` `code` `` | `` `console.log()` `` |
-| **Code Blocks** | ```` ```lang` | ```` ```javascript` |
-| **Links** | `[text](url)` | `[GitHub](https://github.com)` |
-| **Images** | `![alt](path)` | `![Screenshot](img.png)` |
-| **Tables** | `\| col \| col \|` | `\| Name \| Value \|` |
-| **Quotes** | `> quote` | `> Important note` |
-| **Horizontal Rule** | `---` | `---` |
+| **見出し** | `# ## ###` | `# メインタイトル` |
+| **太字/斜体** | `**太字** *斜体*` | `**重要** *注意*` |
+| **リスト** | `- * 1.` | `- 項目1` |
+| **コード** | `` `コード` `` | `` `console.log()` `` |
+| **コードブロック** | ```` ```言語` | ```` ```javascript` |
+| **リンク** | `[テキスト](URL)` | `[GitHub](https://github.com)` |
+| **画像** | `![alt](パス)` | `![スクリーンショット](img.png)` |
+| **テーブル** | `\| 列 \| 列 \|` | `\| 名前 \| 値 \|` |
+| **引用** | `> 引用` | `> 重要な注意` |
+| **水平線** | `---` | `---` |
 
 ---
 
-## 🛠️ Development
+## 🔮 実装予定機能
 
-### 🚀 **Getting Started**
+### 🚀 **近々実装予定**
+
+- **自動保存機能** - リアルタイムでの自動保存
+- **新しいファイル・フォルダ作成機能** - エディタ内から直接作成
+- **チェックボックス表示機能** - Preview/ExportHTMLでチェックボックス対応
+- **レイアウト調整** - Preview/ExportHTMLのレイアウトカスタマイズ
+
+### 🎯 **中期実装予定**
+
+- **MDボタン** - テーブル、リスト、連番リストなどのボタンからMD形式文字列挿入
+- **プリセットMD呼び出し機能** - 3つほどお気に入りのMDを登録可能
+- **ExportHTMLのダークライトモード選択機能** - エクスポート時のテーマ選択
+
+### 🔮 **長期実装予定**
+
+- **コード比較機能** - ファイル間の差分比較
+- **バージョン管理・比較機能** - Git統合とバージョン履歴管理
+
+---
+
+## 🛠️ 開発
+
+### 🚀 **開発環境セットアップ**
 
 ```bash
-# Clone the repository
+# リポジトリをクローン
 git clone https://github.com/siro2462/mdoc.git
 cd mdoc
 
-# Install dependencies
+# 依存関係をインストール
 npm install
 
-# Start development server
+# 開発サーバーを起動
 npm run dev
 
-# Run Electron in development mode
+# 開発モードでElectronを実行
 npm run electron:dev
 ```
 
-### 🔨 **Build Commands**
+### 🔨 **ビルドコマンド**
 
 ```bash
-# Build React app
+# Reactアプリをビルド
 npm run build
 
-# Build Electron app
+# Electronアプリをビルド
 npm run electron-build
 
-# Create Windows installer
+# Windowsインストーラーを作成
 npm run build:win
 
-# Create macOS installer
+# macOSインストーラーを作成
 npm run build:mac
 
-# Create Linux installer
+# Linuxインストーラーを作成
 npm run build:linux
 ```
 
-### 📁 **Project Structure**
+### 📁 **プロジェクト構造**
 
 ```
 mdoc/
-├── src/                    # Source code
-│   ├── components/         # React components
-│   ├── assets/            # Static assets
-│   │   └── icons/         # SVG icons
-│   └── utils/             # Utility functions
-├── electron/              # Electron main process
-├── public/                # Public assets
-├── dist/                  # Build output
-│   ├── MDoc Setup 1.0.0.exe  # Windows installer
-│   └── win-unpacked/      # Unpacked app
-├── components/            # Shared components
-└── types.ts              # TypeScript definitions
+├── src/                    # ソースコード
+│   ├── components/         # Reactコンポーネント
+│   ├── assets/            # 静的アセット
+│   │   └── icons/         # SVGアイコン
+│   └── utils/             # ユーティリティ関数
+├── electron/              # Electronメインプロセス
+├── public/                # パブリックアセット
+├── dist/                  # ビルド出力
+│   ├── MDoc Setup 1.0.0.exe  # Windowsインストーラー
+│   └── win-unpacked/      # アンパック済みアプリ
+├── components/            # 共有コンポーネント
+└── types.ts              # TypeScript定義
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛 トラブルシューティング
 
-### ❓ **Common Issues**
+### ❓ **よくある問題**
 
-#### **Icons not displaying**
-- Ensure you're using the latest version
-- Try restarting the application
-- Check if antivirus is blocking the app
+#### **アイコンが表示されない**
+- 最新版を使用していることを確認
+- アプリケーションを再起動してみる
+- アンチウイルスがアプリをブロックしていないか確認
 
-#### **File not saving**
-- Check file permissions
-- Ensure the file isn't open in another program
-- Try saving to a different location
+#### **ファイルが保存されない**
+- ファイルの権限を確認
+- ファイルが他のプログラムで開かれていないか確認
+- 別の場所に保存してみる
 
-#### **Export not working**
-- Verify the Markdown file is valid
-- Check available disk space
-- Try exporting to a different folder
+#### **エクスポートが動作しない**
+- Markdownファイルが有効か確認
+- 空きディスク容量を確認
+- 別のフォルダにエクスポートしてみる
 
-#### **Performance issues**
-- Close other applications to free up memory
-- Try restarting the application
-- Check if the project folder is too large
+#### **パフォーマンスの問題**
+- 他のアプリケーションを閉じてメモリを解放
+- アプリケーションを再起動してみる
+- プロジェクトフォルダが大きすぎないか確認
 
-### 📞 **Getting Help**
+### 📞 **ヘルプを求める**
 
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/siro2462/mdoc/issues)
-- **💡 Feature Requests**: [GitHub Discussions](https://github.com/siro2462/mdoc/discussions)
-- **📧 Contact**: [Email Support](mailto:support@mdoc.app)
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### 🎯 **How to Contribute**
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
-4. **Push to the branch** (`git push origin feature/amazing-feature`)
-5. **Open a Pull Request**
+- **🐛 バグ報告**: [GitHub Issues](https://github.com/siro2462/mdoc/issues)
+- **💡 機能要望**: [GitHub Discussions](https://github.com/siro2462/mdoc/discussions)
+- **📧 連絡先**: [Email Support](mailto:support@mdoc.app)
 
 ---
 
-## 📄 License
+## 🤝 貢献
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+私たちは貢献を歓迎します！詳細は[貢献ガイド](CONTRIBUTING.md)をご覧ください。
+
+### 🎯 **貢献方法**
+
+1. **リポジトリをフォーク**
+2. **機能ブランチを作成** (`git checkout -b feature/amazing-feature`)
+3. **変更をコミット** (`git commit -m 'Add amazing feature'`)
+4. **ブランチにプッシュ** (`git push origin feature/amazing-feature`)
+5. **プルリクエストを開く**
 
 ---
 
-## 🙏 Acknowledgments
+## 📄 ライセンス
 
-- **Electron** - For the amazing desktop app framework
-- **React** - For the powerful UI library
-- **Vite** - For the fast build tool
-- **markdown-it** - For the Markdown parser
-- **highlight.js** - For syntax highlighting
-- **Tailwind CSS** - For the utility-first CSS framework
+このプロジェクトはMITライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+
+---
+
+## 🙏 謝辞
+
+- **Electron** - 素晴らしいデスクトップアプリフレームワーク
+- **React** - 強力なUIライブラリ
+- **Vite** - 高速ビルドツール
+- **markdown-it** - Markdownパーサー
+- **highlight.js** - シンタックスハイライト
+- **Tailwind CSS** - ユーティリティファーストCSSフレームワーク
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ by the MDoc Team</p>
+  <p>MDocチームが❤️で作成</p>
   <p>
-    <a href="https://github.com/siro2462/mdoc">⭐ Star us on GitHub</a> •
-    <a href="https://github.com/siro2462/mdoc/issues">🐛 Report Bug</a> •
-    <a href="https://github.com/siro2462/mdoc/discussions">💬 Discuss</a>
+    <a href="https://github.com/siro2462/mdoc">⭐ GitHubでスター</a> •
+    <a href="https://github.com/siro2462/mdoc/issues">🐛 バグ報告</a> •
+    <a href="https://github.com/siro2462/mdoc/discussions">💬 ディスカッション</a>
   </p>
 </div>
