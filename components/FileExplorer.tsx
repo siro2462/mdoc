@@ -50,17 +50,20 @@ const FileTreeNode: React.FC<{
 
   const isActive = activeFile?.id === node.id;
   const itemBg = isActive
-    ? 'bg-light-accent/20 dark:bg-dark-accent/20'
+    ? 'bg-light-accent/10 dark:bg-dark-accent/10'
     : '';
   const itemTextColor = isActive
-    ? 'text-light-accent dark:text-dark-accent'
+    ? 'text-light-accent dark:text-dark-accent font-medium'
     : 'text-light-text-secondary dark:text-dark-text-secondary';
+  const itemBorder = isActive
+    ? 'border-l-2 border-light-accent dark:border-dark-accent'
+    : '';
 
   return (
     <>
       <div
         onClick={handleToggle}
-        className={`flex items-center cursor-pointer px-2 py-1 rounded ${itemBg} ${itemTextColor} hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary`}
+        className={`flex items-center cursor-pointer px-2 py-1 rounded ${itemBg} ${itemTextColor} ${itemBorder} hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-colors duration-150`}
       >
         {/* インデント用スペーサー */}
         <div style={{ width: `${level * 16}px` }} />
@@ -70,10 +73,13 @@ const FileTreeNode: React.FC<{
           {isFolder ? (
             <Icon
               name={isOpen ? 'chevron-down' : 'chevron-right'}
-              className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary"
+              className={`w-3 h-3 ${isActive ? 'text-light-accent dark:text-dark-accent' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
             />
           ) : (
-            <Icon name={getIconForFile(node.name)} className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
+            <Icon 
+              name={getIconForFile(node.name)} 
+              className={`w-4 h-4 ${isActive ? 'text-light-accent dark:text-dark-accent' : 'text-light-text-secondary dark:text-dark-text-secondary'}`} 
+            />
           )}
         </div>
 
