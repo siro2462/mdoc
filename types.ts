@@ -29,6 +29,19 @@ export interface MarkdownParseResult {
   toc: Array<{ level: number; text: string; id: string }>;
 }
 
+// SVGコンポーネントの型定義
+declare module '*.svg' {
+  import React from 'react';
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+
+declare module '*.svg?react' {
+  import React from 'react';
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+
 
 
 // Electron APIの型定義

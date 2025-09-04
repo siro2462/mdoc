@@ -2,6 +2,18 @@
   "name": "mdoc",
   "private": true,
   "version": "1.0.0",
+  "description": "A modern, feature-rich Markdown editor built with Electron, React, and TypeScript. Edit Markdown files with live preview, export to HTML, and manage projects with an intuitive file tree interface.",
+  "keywords": ["markdown", "editor", "electron", "react", "typescript", "preview", "html", "export"],
+  "author": "MDoc Team",
+  "homepage": "https://github.com/your-username/mdoc#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/mdoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/mdoc/issues"
+  },
+  "license": "MIT",
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite",
@@ -10,10 +22,12 @@
     "electron": "electron .",
     "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
     "electron-build": "npm run build && electron-builder",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux"
   },
   "dependencies": {
-    "electron": "^38.0.0",
     "fs-extra": "^11.2.0",
     "highlight.js": "^11.9.0",
     "markdown-it": "^14.0.0",
@@ -28,9 +42,11 @@
     "@types/vscode": "^1.103.0",
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^8.2.2",
+    "electron": "^38.0.0",
     "electron-builder": "^25.1.0",
     "typescript": "~5.8.2",
     "vite": "^5.4.0",
+    "vite-plugin-svgr": "^4.5.0",
     "wait-on": "^7.2.0"
   },
   "build": {
@@ -42,11 +58,46 @@
     "files": [
       "dist/**/*",
       "electron/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "package.json",
+      "public/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": "public",
+        "filter": [
+          "**/*"
+        ]
+      }
     ],
     "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MDoc",
+      "installerIcon": "assets/logo.ico",
+      "uninstallerIcon": "assets/logo.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/logo.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/logo.ico"
     }
   }
 }
