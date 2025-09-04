@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
+import anchor from 'markdown-it-anchor';
 
 // Markdown-itの設定（簡易版）
 const md = new MarkdownIt({
@@ -14,6 +15,19 @@ const md = new MarkdownIt({
       } catch (__) {}
     }
     return hljs.highlightAuto(str).value;
+  }
+});
+
+// anchorプラグインを追加
+md.use(anchor, {
+  permalink: false,
+  permalinkBefore: false,
+  permalinkSymbol: '',
+  level: [1, 2, 3, 4, 5, 6],
+  slugify: (str: string) => {
+    return str.toLowerCase()
+      .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }
 });
 
@@ -38,6 +52,7 @@ const qiitaStyles = `
     margin-bottom: 16px;
     font-weight: 600;
     line-height: 1.25;
+    scroll-margin-top: 20px;
   }
 
   .markdown-preview h1 {
@@ -81,7 +96,7 @@ const qiitaStyles = `
   .markdown-preview code {
     padding: 0.2em 0.4em;
     margin: 0;
-    font-size: 85%;
+    font-size: 95%;
     background-color: rgba(27, 31, 35, 0.05);
     border-radius: 3px;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -90,7 +105,7 @@ const qiitaStyles = `
   .markdown-preview pre {
     padding: 16px;
     overflow: auto;
-    font-size: 85%;
+    font-size: 95%;
     line-height: 1.45;
     background-color: #f6f8fa;
     border-radius: 3px;
@@ -117,7 +132,9 @@ const qiitaStyles = `
 
   .markdown-preview table th {
     font-weight: 600;
-    background-color: #f6f8fa;
+    background-color: #f1f3f4;
+    color: #202124;
+    border-bottom: 2px solid #dadce0;
   }
 
   .markdown-preview img {
@@ -165,6 +182,7 @@ const darkModeStyles = `
     margin-bottom: 16px;
     font-weight: 600;
     line-height: 1.25;
+    scroll-margin-top: 20px;
   }
 
   .markdown-preview h1 {
@@ -208,7 +226,7 @@ const darkModeStyles = `
   .markdown-preview code {
     padding: 0.2em 0.4em;
     margin: 0;
-    font-size: 85%;
+    font-size: 95%;
     background-color: rgba(110, 118, 129, 0.4);
     border-radius: 3px;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -217,7 +235,7 @@ const darkModeStyles = `
   .markdown-preview pre {
     padding: 16px;
     overflow: auto;
-    font-size: 85%;
+    font-size: 95%;
     line-height: 1.45;
     background-color: #161b22;
     border-radius: 3px;
@@ -244,7 +262,9 @@ const darkModeStyles = `
 
   .markdown-preview table th {
     font-weight: 600;
-    background-color: #161b22;
+    background-color: #21262d;
+    color: #f0f6fc;
+    border-bottom: 2px solid #30363d;
   }
 
   .markdown-preview img {
@@ -286,13 +306,26 @@ export function parseMarkdown(content: string, isDarkMode: boolean = false): Mar
     if (headingMatch) {
       const level = headingMatch[1].length;
       const text = headingMatch[2].trim();
-      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      toc.push({ level, text, id });
+      // markdown-it-anchorと同じID生成ロジックを使用
+      let id = text.toLowerCase()
+        .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      if (!id) id = 'heading';
+      
+      // 重複するIDを避ける
+      let counter = 1;
+      let finalId = id;
+      while (toc.some(item => item.id === finalId)) {
+        finalId = `${id}-${counter}`;
+        counter++;
+      }
+      
+      toc.push({ level, text, id: finalId });
     }
   });
 
-  // MarkdownをHTMLに変換
-  const html = md.render(content);
+  // MarkdownをHTMLに変換（anchorプラグインが自動的にIDを追加）
+  let html = md.render(content);
   
   // スタイルを適用
   const styles = isDarkMode ? darkModeStyles : qiitaStyles;
@@ -304,18 +337,4 @@ export function parseMarkdown(content: string, isDarkMode: boolean = false): Mar
   };
 }
 
-export function generateHtmlFile(content: string, title: string, isDarkMode: boolean = false): string {
-  const { html } = parseMarkdown(content, isDarkMode);
-  
-  return `<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
-</head>
-<body>
-  ${html}
-</body>
-</html>`;
-}
+

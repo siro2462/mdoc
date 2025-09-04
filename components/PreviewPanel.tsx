@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { parseMarkdown } from '../utils/markdown';
 import { Icon } from './Icon';
 
@@ -11,11 +11,24 @@ interface PreviewPanelProps {
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({ 
   content, 
   isDarkMode, 
-  onExportHtml 
+  onExportHtml
 }) => {
   const [parsedContent, setParsedContent] = useState('');
   const [toc, setToc] = useState<Array<{ level: number; text: string; id: string }>>([]);
   const [showToc, setShowToc] = useState(false);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+
+  // TOCリンククリックハンドラー
+  const handleTocClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  };
 
   // Markdownコンテンツが変更されたときにパース
   useEffect(() => {
@@ -29,8 +42,10 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
     }
   }, [content, isDarkMode]);
 
+
+
   return (
-    <aside className="w-full h-full bg-light-bg-secondary dark:bg-dark-bg-secondary flex flex-col">
+    <aside ref={previewContainerRef} className="w-full h-full bg-light-bg-secondary dark:bg-dark-bg-secondary flex flex-col">
       {/* Header - Fixed */}
       <div className="flex-shrink-0 bg-light-bg-secondary dark:bg-dark-bg-secondary h-9 flex items-center justify-between sticky top-0 z-10 px-4">
         <h2 className="text-xs uppercase font-bold text-light-text-secondary dark:text-dark-text-secondary">
@@ -43,7 +58,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="Toggle Table of Contents"
             >
-              <Icon name="list" className="w-3 h-3" />
+              <Icon name="three-bars" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           )}
           {onExportHtml && (
@@ -52,17 +67,25 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="Export to HTML"
             >
-              <Icon name="download" className="w-3 h-3" />
+              <Icon name="export" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           )}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-grow flex">
+      {/* Content - Scrollable */}
+      <div className="flex-grow flex flex-col overflow-hidden">
+        {/* Preview Content */}
+        <div className="flex-grow bg-light-bg-secondary dark:bg-dark-bg-secondary overflow-y-auto scrollbar-auto-hide">
+          <div 
+            className="p-4"
+            dangerouslySetInnerHTML={{ __html: parsedContent }}
+          />
+        </div>
+
         {/* Table of Contents */}
         {showToc && toc.length > 0 && (
-          <div className="w-48 border-r border-light-border dark:border-dark-border overflow-y-auto">
+          <div className="h-48 border-t border-light-border dark:border-dark-border overflow-y-auto scrollbar-auto-hide bg-light-bg dark:bg-dark-bg flex-shrink-0">
             <div className="p-4">
               <h3 className="text-sm font-semibold mb-2 text-light-text dark:text-dark-text">
                 Table of Contents
@@ -72,7 +95,8 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
                   <li key={index}>
                     <a
                       href={`#${item.id}`}
-                      className="block text-sm text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text"
+                      onClick={(e) => handleTocClick(e, item.id)}
+                      className="block text-sm text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text cursor-pointer"
                       style={{ paddingLeft: `${(item.level - 1) * 12}px` }}
                     >
                       {item.text}
@@ -83,14 +107,6 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
             </div>
           </div>
         )}
-
-        {/* Preview Content */}
-        <div className="flex-grow bg-light-bg-secondary dark:bg-dark-bg-secondary">
-          <div 
-            className="p-4"
-            dangerouslySetInnerHTML={{ __html: parsedContent }}
-          />
-        </div>
       </div>
     </aside>
   );

@@ -148,10 +148,9 @@ const CustomTextarea = forwardRef<CustomTextareaRef, CustomTextareaProps>(
 
     // 値が変更された時の処理
     useEffect(() => {
-      if (value !== originalValue) {
-        setOriginalValue(value);
-        setDisplayValue(convertBase64ToFolded(value));
-      }
+      // 親コンポーネントから渡されたpropsを常に信頼する
+      setOriginalValue(value);
+      setDisplayValue(convertBase64ToFolded(value));
     }, [value]);
 
     // 表示用の値が変更された時の処理

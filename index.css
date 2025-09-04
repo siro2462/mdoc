@@ -18,7 +18,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Custom scrollbar styles */
+/* Custom scrollbar styles - Hidden by default, shown on hover */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -29,18 +29,44 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: transparent;
   border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: #ccc;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #555;
+  background: transparent;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: #555;
+}
+
+/* Show scrollbar on hover for containers */
+.scrollbar-auto-hide {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+
+.scrollbar-auto-hide:hover {
+  scrollbar-color: #ccc transparent;
+}
+
+.dark .scrollbar-auto-hide:hover {
+  scrollbar-color: #555 transparent;
+}
+
+/* Hide scrollbar completely for specific elements */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
 }

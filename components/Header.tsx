@@ -9,6 +9,8 @@ interface HeaderProps {
   onExportHtml?: () => void;
   activeFile?: string | null;
   projectPath?: string;
+  isAutoSaveEnabled?: boolean;
+  toggleAutoSave?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -17,7 +19,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenProject,
   onExportHtml,
   activeFile,
-  projectPath
+  projectPath,
+  isAutoSaveEnabled,
+  toggleAutoSave
 }) => {
   // プロジェクトフォルダ名を取得
   const projectName = projectPath ? projectPath.split(/[/\\]/).pop() || projectPath : '';
@@ -33,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="flex items-center justify-between h-9 bg-light-bg-tertiary dark:bg-dark-bg-tertiary px-4" style={{ WebkitAppRegion: 'drag' }}>
       {/* 左端のアイコン */}
       <div className="flex items-center" style={{ WebkitAppRegion: 'no-drag' }}>
-        <Icon name="file-text" className="w-4 h-4 text-light-text dark:text-dark-text" />
+        <Icon name="markdown" className="w-4 h-4 text-light-text dark:text-dark-text" />
       </div>
       
       {/* 中央のタイトル */}
@@ -51,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
             title="Open Project Folder"
           >
-            <Icon name="folder-plus" className="w-4 h-4" />
+            <Icon name="folder-opened" className="w-4 h-4" />
           </button>
         )}
         
@@ -61,7 +65,17 @@ export const Header: React.FC<HeaderProps> = ({
             className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
             title="Export to HTML"
           >
-            <Icon name="download" className="w-4 h-4" />
+            <Icon name="export" className="w-4 h-4" />
+          </button>
+        )}
+        
+        {toggleAutoSave && (
+          <button
+            onClick={toggleAutoSave}
+            className={`p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary ${isAutoSaveEnabled ? 'text-green-500' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
+            title={`${isAutoSaveEnabled ? 'Disable' : 'Enable'} Auto Save`}
+          >
+            <Icon name="save" className="w-4 h-4" />
           </button>
         )}
         
@@ -70,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
           title={`Switch to ${theme === Theme.LIGHT ? 'Dark' : 'Light'} Mode`}
         >
-          <Icon name={theme === Theme.LIGHT ? 'moon' : 'sun'} className="w-4 h-4" />
+          <Icon name="color-mode" className="w-4 h-4" />
         </button>
         
         {/* ウィンドウコントロールボタン */}
@@ -81,21 +95,21 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="Minimize"
             >
-              <Icon name="minus" className="w-4 h-4" />
+              <Icon name="chrome-minimize" className="w-4 h-4" />
             </button>
             <button
               onClick={() => window.electronAPI.maximizeWindow()}
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="Maximize"
             >
-              <Icon name="square" className="w-4 h-4" />
+              <Icon name="chrome-maximize" className="w-4 h-4" />
             </button>
             <button
               onClick={() => window.electronAPI.closeWindow()}
               className="p-1 rounded hover:bg-red-500 hover:text-white"
               title="Close"
             >
-              <Icon name="x" className="w-4 h-4" />
+              <Icon name="chrome-close" className="w-4 h-4" />
             </button>
           </div>
         )}

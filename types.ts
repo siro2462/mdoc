@@ -6,7 +6,7 @@ export enum Theme {
 
 export enum FileType {
   FILE = 'file',
-  FOLDER = 'folder'
+  FOLDER = 'directory'
 }
 
 export interface FileNode {
@@ -29,13 +29,7 @@ export interface MarkdownParseResult {
   toc: Array<{ level: number; text: string; id: string }>;
 }
 
-export interface ImageInfo {
-  base64: string;
-  width: number;
-  height: number;
-  originalSize: number;
-  resizedSize: number;
-}
+
 
 // Electron APIの型定義
 declare global {
@@ -47,7 +41,7 @@ declare global {
       writeFile: (filePath: string, content: string) => Promise<{ success: boolean; error?: string }>;
       getFileInfo: (filePath: string) => Promise<{ success: boolean; isDirectory?: boolean; size?: number; modified?: string; error?: string }>;
       exportToHtml: (markdownPath: string, content: string, isDarkMode: boolean) => Promise<{ success: boolean; htmlPath?: string; error?: string }>;
-      processImage: (imagePath: string) => Promise<{ success: boolean; imageInfo?: ImageInfo; error?: string }>;
+      processImage: (imagePath: string) => Promise<{ success: boolean; error?: string }>;
       minimizeWindow: () => void;
       maximizeWindow: () => void;
       closeWindow: () => void;

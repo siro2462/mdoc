@@ -8,6 +8,10 @@ interface EditorPanelProps {
   activeFile: FileNode | null;
   onContentChange: (content: string) => void;
   onSave: (filePath: string, content: string) => Promise<void>;
+  isAutoSaveEnabled?: boolean;
+  onSaveSuccess?: () => void;
+  hasUnsavedChanges?: boolean;
+  onCloseFile?: () => void;
 }
 
 // 画像リサイズ関数
@@ -48,55 +52,58 @@ const resizeImage = (file: File, maxWidth: number): Promise<string> => {
 export const EditorPanel: React.FC<EditorPanelProps> = ({ 
   activeFile, 
   onContentChange, 
-  onSave 
+  onSave,
+  isAutoSaveEnabled = false,
+  onSaveSuccess,
+  hasUnsavedChanges = false,
+  onCloseFile
 }) => {
-  const [content, setContent] = useState('');
+  // content stateを削除し、activeFile.contentを直接使用
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
   const textareaRef = useRef<CustomTextareaRef>(null);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
 
-  // アクティブファイルが変更されたときにコンテンツを読み込み
+  // アクティブファイルが変更されたときにlastSavedをリセット
   useEffect(() => {
-    if (activeFile && activeFile.content) {
-      setContent(activeFile.content);
-    } else {
-      setContent('');
-    }
     setLastSaved(null);
+    // タイマーをクリア
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+      autoSaveTimeoutRef.current = null;
+    }
   }, [activeFile]);
+
+
 
   // 自動保存機能
   const autoSave = useCallback(async () => {
-    if (!activeFile || !content.trim()) return;
+    if (!activeFile || !activeFile.content?.trim() || !isAutoSaveEnabled) return;
     
     try {
       setIsSaving(true);
-      await onSave(activeFile.path, content);
+      await onSave(activeFile.path, activeFile.content);
       setLastSaved(new Date());
+      onSaveSuccess?.(); // 保存成功時にコールバックを呼び出し
     } catch (error) {
       console.error('Auto save failed:', error);
     } finally {
       setIsSaving(false);
     }
-  }, [activeFile, content, onSave]);
+  }, [activeFile, onSave, isAutoSaveEnabled, onSaveSuccess]);
+
+  // 自動保存のデバウンス用タイマー
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // コンテンツ変更時の処理
   const handleContentChange = (newContent: string) => {
-    setContent(newContent);
     onContentChange(newContent);
-    updateCursorPosition();
     
     // 自動保存（デバウンス）
-    const timeoutId = setTimeout(autoSave, 1000);
-    return () => clearTimeout(timeoutId);
-  };
-
-  // カーソル位置の計算（CustomTextarea用に簡略化）
-  const updateCursorPosition = () => {
-    // CustomTextareaでは表示用の値でカーソル位置を計算
-    const lines = content.split('\n');
-    setCursorPosition({ line: lines.length, column: 1 });
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+    autoSaveTimeoutRef.current = setTimeout(autoSave, 1000);
   };
 
   // 画像アップロード処理
@@ -115,14 +122,15 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         textarea.focus();
       } else {
         // フォールバック: 末尾に挿入
-        const newValue = content + markdownImage;
-        handleContentChange(newValue);
+        const currentContent = activeFile?.content || '';
+        const newValue = currentContent + markdownImage;
+        onContentChange(newValue);
       }
     } catch (error) {
       console.error("Image processing failed:", error);
       alert("Failed to process image.");
     }
-  }, [content, handleContentChange]);
+  }, [activeFile?.content, onContentChange]);
 
   // クリップボードからの画像貼り付け
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
@@ -166,58 +174,66 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     }
   }, [handleImageUpload]);
 
-  const lineCount = content.split('\n').length;
+  const lineCount = activeFile?.content?.split('\n').length || 0;
 
   return (
-    <div className="flex flex-col flex-grow bg-light-bg dark:bg-dark-bg">
+    <div ref={editorContainerRef} className="flex flex-col h-full bg-light-bg dark:bg-dark-bg">
       {/* Tabs - Fixed Header */}
       <div className="flex-shrink-0 bg-light-bg-secondary dark:bg-dark-bg-secondary h-9 flex items-center justify-between sticky top-0 z-10">
         {activeFile && (
           <>
-            <div className="inline-flex items-center h-full px-4 bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text">
-              <Icon name="file-text" className="w-4 h-4 mr-2" />
+            <div className="inline-flex items-center h-full px-4 bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text group">
+              <Icon name="markdown" className="w-4 h-4 mr-2 text-light-text-secondary dark:text-dark-text-secondary" />
               <span>{activeFile.name}</span>
               {isSaving && (
-                <Icon name="loading" className="w-3 h-3 ml-2 animate-spin" />
+                <Icon name="loading" className="w-4 h-4 ml-2 animate-spin text-light-text-secondary dark:text-dark-text-secondary" />
               )}
-              {lastSaved && (
+              {lastSaved && !hasUnsavedChanges && (
                 <span className="ml-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
                   Saved {lastSaved.toLocaleTimeString()}
                 </span>
               )}
-            </div>
-            <div className="flex items-center px-2">
-              <button 
-                className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
-                onClick={() => autoSave()}
-                disabled={isSaving}
-              >
-                <Icon name="save" className="w-3 h-3" />
-              </button>
+              <div className="ml-2 w-4 h-4 flex items-center justify-center">
+                {hasUnsavedChanges ? (
+                  <>
+                    <div className="group-hover:hidden flex items-center justify-center">
+                      <div className="w-2 h-2 bg-orange-500 dark:bg-orange-400 rounded-full animate-pulse"></div>
+                    </div>
+                    {onCloseFile && (
+                      <button
+                        onClick={onCloseFile}
+                        className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100 absolute"
+                        title="Close file"
+                      >
+                        <Icon name="chrome-close" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
+                      </button>
+                    )}
+                  </>
+                ) : onCloseFile ? (
+                  <button
+                    onClick={onCloseFile}
+                    className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-opacity opacity-0 group-hover:opacity-100"
+                    title="Close file"
+                  >
+                    <Icon name="chrome-close" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
+                  </button>
+                ) : null}
+              </div>
             </div>
           </>
         )}
       </div>
 
       {/* Code Editor */}
-      <div className="flex-grow flex font-mono text-sm">
-        {/* Line Numbers */}
-        <div className="w-12 text-right pr-4 py-2 text-light-text-secondary dark:text-dark-text-secondary select-none overflow-hidden">
-          {Array.from({ length: Math.max(lineCount, 1) }, (_, i) => (
-            <div key={i} className={cursorPosition.line === i + 1 ? 'bg-light-accent/20 dark:bg-dark-accent/20' : ''}>
-              {i + 1}
-            </div>
-          ))}
-        </div>
-        
+      <div className="flex-1 flex font-mono text-sm overflow-hidden min-h-0">
         {/* Code Content */}
-        <div className="flex-grow relative">
+        <div className="flex-1 relative overflow-hidden">
           <CustomTextarea
             ref={textareaRef}
-            value={content}
+            value={activeFile?.content || ''}
             onChange={handleContentChange}
             onPaste={handlePaste}
-            className="w-full h-full p-2 bg-transparent text-light-text dark:text-dark-text resize-none outline-none border-none"
+            className="w-full h-full p-2 bg-transparent text-light-text dark:text-dark-text resize-none outline-none border-none overflow-y-auto scrollbar-auto-hide"
             placeholder={activeFile ? "Start typing your markdown... (Ctrl+V for images)" : "No file selected"}
           />
         </div>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,50 +8,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
-        darkMode: 'class',
+        darkMode: "class",
         theme: {
           extend: {
             colors: {
               // Light Theme
               light: {
-                bg: '#FFFFFF',
-                'bg-secondary': '#F3F3F3',
-                'bg-tertiary': '#E7E7E7',
-                text: '#1E1E1E',
-                'text-secondary': '#666666',
-                border: '#DDDDDD',
-                accent: '#007ACC',
-                'accent-hover': '#005A9E',
+                bg: "#FFFFFF",
+                "bg-secondary": "#F3F3F3",
+                "bg-tertiary": "#E7E7E7",
+                text: "#1E1E1E",
+                "text-secondary": "#666666",
+                border: "#DDDDDD",
+                accent: "#007ACC",
+                "accent-hover": "#005A9E",
               },
               // Dark Theme (VS Code Dark+ inspired)
               dark: {
-                bg: '#1E1E1E',
-                'bg-secondary': '#252526',
-                'bg-tertiary': '#333333',
-                text: '#D4D4D4',
-                'text-secondary': '#A0A0A0',
-                border: '#3C3C3C',
-                accent: '#007ACC',
-                'accent-hover': '#0090F1',
+                bg: "#1E1E1E",
+                "bg-secondary": "#252526",
+                "bg-tertiary": "#333333",
+                text: "#D4D4D4",
+                "text-secondary": "#A0A0A0",
+                border: "#3C3C3C",
+                accent: "#007ACC",
+                "accent-hover": "#0090F1",
               },
             },
           },
         },
+      };
+    </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://aistudiocdn.com/react@^19.1.1",
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+          "react/": "https://aistudiocdn.com/react@^19.1.1/"
+        }
       }
     </script>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
   <body class="bg-light-bg dark:bg-dark-bg">
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
