@@ -1,7 +1,7 @@
 {
   "name": "mdoc",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A modern, feature-rich Markdown editor built with Electron, React, and TypeScript. Edit Markdown files with live preview, export to HTML, and manage projects with an intuitive file tree interface.",
   "keywords": ["markdown", "editor", "electron", "react", "typescript", "preview", "html", "export"],
   "author": "MDoc Team",

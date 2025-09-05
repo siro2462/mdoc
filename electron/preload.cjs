@@ -28,6 +28,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
   maximizeWindow: () => ipcRenderer.invoke('maximize-window'),
   closeWindow: () => ipcRenderer.invoke('close-window'),
   
+  // ファイル・フォルダ作成
+  createFolder: (folderName, parentPath) => ipcRenderer.invoke('create-folder', folderName, parentPath),
+  createFile: (fileName, parentPath) => ipcRenderer.invoke('create-file', fileName, parentPath),
+  
+  // プロジェクトデータを取得
+  getProjectData: () => ipcRenderer.invoke('get-project-data'),
+  
   // ファイルシステムの変更を監視
   onFileSystemChange: (callback) => {
     // 将来的にファイルシステム監視を実装する場合の準備

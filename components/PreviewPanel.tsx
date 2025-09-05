@@ -47,10 +47,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   return (
     <aside ref={previewContainerRef} className="w-full h-full bg-light-bg-secondary dark:bg-dark-bg-secondary flex flex-col">
       {/* Header - Fixed */}
-      <div className="flex-shrink-0 bg-light-bg-secondary dark:bg-dark-bg-secondary h-9 flex items-center justify-between sticky top-0 z-10 px-4">
-        <h2 className="text-xs uppercase font-bold text-light-text-secondary dark:text-dark-text-secondary">
-          Preview
-        </h2>
+      <div className="flex-shrink-0 bg-light-bg-secondary dark:bg-dark-bg-secondary h-9 flex items-center justify-end sticky top-0 z-10 px-4">
         <div className="flex items-center space-x-2">
           {toc.length > 0 && (
             <button

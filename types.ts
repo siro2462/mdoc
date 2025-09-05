@@ -58,6 +58,9 @@ declare global {
       minimizeWindow: () => void;
       maximizeWindow: () => void;
       closeWindow: () => void;
+      createFolder: (folderName: string, parentPath?: string) => Promise<{ success: boolean; error?: string }>;
+      createFile: (fileName: string, parentPath?: string) => Promise<{ success: boolean; error?: string }>;
+      getProjectData: () => Promise<ProjectData | null>;
       onFileSystemChange: (callback: (event: any, data: any) => void) => void;
     };
     process: {

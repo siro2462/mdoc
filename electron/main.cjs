@@ -86,6 +86,10 @@ ipcMain.handle('open-project-folder', async () => {
     if (!result.canceled && result.filePaths.length > 0) {
       const projectPath = result.filePaths[0];
       console.log('Selected project path:', projectPath);
+      
+      // グローバル変数にプロジェクトパスを設定
+      global.currentProjectPath = projectPath;
+      
       const scanResult = await scanProjectFolder(projectPath);
       console.log('Scan result:', scanResult);
       return scanResult;
@@ -109,6 +113,10 @@ ipcMain.handle('open-project-from-path', async (event, projectPath) => {
     }
     
     console.log('Opening project from saved path:', projectPath);
+    
+    // グローバル変数にプロジェクトパスを設定
+    global.currentProjectPath = projectPath;
+    
     const scanResult = await scanProjectFolder(projectPath);
     console.log('Scan result:', scanResult);
     
@@ -212,6 +220,74 @@ ipcMain.handle('maximize-window', () => {
 ipcMain.handle('close-window', () => {
   if (mainWindow) {
     mainWindow.close();
+  }
+});
+
+// フォルダ作成
+ipcMain.handle('create-folder', async (event, folderName, parentPath = null) => {
+  try {
+    if (!global.currentProjectPath) {
+      return { success: false, error: 'No project folder opened' };
+    }
+    
+    const basePath = parentPath || global.currentProjectPath;
+    const folderPath = path.join(basePath, folderName);
+    
+    // フォルダが既に存在するかチェック
+    try {
+      await fs.stat(folderPath);
+      return { success: false, error: 'Folder already exists' };
+    } catch (error) {
+      // フォルダが存在しない場合は作成
+    }
+    
+    await fs.mkdir(folderPath, { recursive: true });
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to create folder:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// ファイル作成
+ipcMain.handle('create-file', async (event, fileName, parentPath = null) => {
+  try {
+    if (!global.currentProjectPath) {
+      return { success: false, error: 'No project folder opened' };
+    }
+    
+    const basePath = parentPath || global.currentProjectPath;
+    const filePath = path.join(basePath, fileName);
+    
+    // ファイルが既に存在するかチェック
+    try {
+      await fs.stat(filePath);
+      return { success: false, error: 'File already exists' };
+    } catch (error) {
+      // ファイルが存在しない場合は作成
+    }
+    
+    // 空のファイルを作成
+    await fs.writeFile(filePath, '', 'utf-8');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to create file:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// プロジェクトデータを取得
+ipcMain.handle('get-project-data', async () => {
+  try {
+    if (!global.currentProjectPath) {
+      return null;
+    }
+    
+    const scanResult = await scanProjectFolder(global.currentProjectPath);
+    return scanResult;
+  } catch (error) {
+    console.error('Failed to get project data:', error);
+    return null;
   }
 });
 

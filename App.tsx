@@ -6,6 +6,7 @@ import { EditorPanel } from './components/EditorPanel';
 import { PreviewPanel } from './components/PreviewPanel';
 import ResizablePanels from './components/ResizablePanels';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { InputDialog } from './components/InputDialog';
 import { Theme, FileType, type FileNode, type ProjectData } from './types';
 
 // 状態をイミュータブルに更新するためのヘルパー関数
@@ -30,6 +31,12 @@ const App: React.FC = () => {
   const [isAutoSaveEnabled, setIsAutoSaveEnabled] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [showInputDialog, setShowInputDialog] = useState(false);
+  const [inputDialogConfig, setInputDialogConfig] = useState<{
+    title: string;
+    placeholder: string;
+    onConfirm: (value: string) => void;
+  } | null>(null);
 
   useEffect(() => {
     if (theme === Theme.DARK) {
@@ -90,6 +97,9 @@ const App: React.FC = () => {
 
   // Ctrl + S で保存
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      return; // CustomTextarea で処理するため除外
+    }
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
       e.preventDefault();
       if (activeFile && activeFile.content) {
@@ -139,56 +149,181 @@ const App: React.FC = () => {
     }
   };
 
-  // 新しいフォルダを作成
-  const handleCreateFolder = async () => {
+  // 新しいフォルダを作成（ルートレベル）
+  const handleCreateFolder = () => {
     if (!window.electronAPI || !projectData) {
       console.error('Electron API not available or no project opened');
       return;
     }
 
-    try {
-      const folderName = prompt('Enter folder name:');
-      if (folderName && folderName.trim()) {
-        const result = await window.electronAPI.createFolder(folderName.trim());
-        if (result) {
-          // プロジェクトデータを再読み込み
-          const updatedProject = await window.electronAPI.getProjectData();
-          if (updatedProject) {
-            setProjectData(updatedProject);
+    setInputDialogConfig({
+      title: 'Create New Folder',
+      placeholder: 'Enter folder name',
+      onConfirm: async (folderName: string) => {
+        try {
+          const result = await window.electronAPI.createFolder(folderName);
+          if (result.success) {
+            // プロジェクトデータを再読み込み
+            const updatedProject = await window.electronAPI.getProjectData();
+            if (updatedProject) {
+              setProjectData(updatedProject);
+            }
+          } else {
+            alert(`Failed to create folder: ${result.error}`);
           }
+        } catch (error) {
+          console.error('Failed to create folder:', error);
+          alert('Failed to create folder. Please try again.');
         }
+      }
+    });
+    setShowInputDialog(true);
+  };
+
+  // 新しいフォルダを作成（指定されたパス内）
+  const handleCreateFolderInPath = async (folderName: string, parentPath: string) => {
+    if (!window.electronAPI) {
+      console.error('Electron API not available');
+      return;
+    }
+
+    try {
+      const result = await window.electronAPI.createFolder(folderName, parentPath);
+      if (result.success) {
+        // プロジェクトデータを再読み込み
+        const updatedProject = await window.electronAPI.getProjectData();
+        if (updatedProject) {
+          setProjectData(updatedProject);
+        }
+      } else {
+        alert(`Failed to create folder: ${result.error}`);
       }
     } catch (error) {
       console.error('Failed to create folder:', error);
+      alert('Failed to create folder. Please try again.');
     }
   };
 
-  // 新しいファイルを作成
-  const handleCreateFile = async () => {
+  // 新しいファイルを作成（ルートレベル）
+  const handleCreateFile = () => {
+    if (!window.electronAPI || !projectData) {
+      console.error('Electron API not available or no project opened');
+      return;
+    }
+
+    setInputDialogConfig({
+      title: 'Create New File',
+      placeholder: 'Enter file name (with extension)',
+      onConfirm: async (fileName: string) => {
+        try {
+          const result = await window.electronAPI.createFile(fileName);
+          if (result.success) {
+            // プロジェクトデータを再読み込み
+            const updatedProject = await window.electronAPI.getProjectData();
+            if (updatedProject) {
+              setProjectData(updatedProject);
+              // 新しく作成されたファイルを選択
+              const newFile = findFileByName(updatedProject.nodes, fileName);
+              if (newFile) {
+                await handleFileSelect(newFile);
+              }
+            }
+          } else {
+            alert(`Failed to create file: ${result.error}`);
+          }
+        } catch (error) {
+          console.error('Failed to create file:', error);
+          alert('Failed to create file. Please try again.');
+        }
+      }
+    });
+    setShowInputDialog(true);
+  };
+
+  // 新しいファイルを作成（指定されたパス内）
+  const handleCreateFileInPath = async (fileName: string, parentPath: string) => {
+    if (!window.electronAPI) {
+      console.error('Electron API not available');
+      return;
+    }
+
+    try {
+      const result = await window.electronAPI.createFile(fileName, parentPath);
+      if (result.success) {
+        // プロジェクトデータを再読み込み
+        const updatedProject = await window.electronAPI.getProjectData();
+        if (updatedProject) {
+          setProjectData(updatedProject);
+          // 新しく作成されたファイルを選択
+          const newFile = findFileByName(updatedProject.nodes, fileName);
+          if (newFile) {
+            await handleFileSelect(newFile);
+          }
+        }
+      } else {
+        alert(`Failed to create file: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Failed to create file:', error);
+      alert('Failed to create file. Please try again.');
+    }
+  };
+
+  // ファイルパスから親ディレクトリを取得するヘルパー関数
+  const getParentDirectory = (filePath: string): string => {
+    const lastSlashIndex = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
+    return lastSlashIndex > 0 ? filePath.substring(0, lastSlashIndex) : '';
+  };
+
+  // 選択中のファイルと同じ階層にファイルを作成
+  const handleCreateFileInSameDirectory = async (fileName: string, filePath: string) => {
+    if (!window.electronAPI) {
+      console.error('Electron API not available');
+      return;
+    }
+
+    try {
+      // ファイルパスから親ディレクトリを取得
+      const parentDir = getParentDirectory(filePath);
+      
+      const result = await window.electronAPI.createFile(fileName, parentDir);
+      if (result.success) {
+        // プロジェクトデータを再読み込み
+        const updatedProject = await window.electronAPI.getProjectData();
+        if (updatedProject) {
+          setProjectData(updatedProject);
+          // 新しく作成されたファイルを選択
+          const newFile = findFileByName(updatedProject.nodes, fileName);
+          if (newFile) {
+            await handleFileSelect(newFile);
+          }
+        }
+      } else {
+        alert(`Failed to create file: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Failed to create file in same directory:', error);
+      alert('Failed to create file. Please try again.');
+    }
+  };
+
+  // プロジェクトをリフレッシュ
+  const handleRefresh = async () => {
     if (!window.electronAPI || !projectData) {
       console.error('Electron API not available or no project opened');
       return;
     }
 
     try {
-      const fileName = prompt('Enter file name (with extension):');
-      if (fileName && fileName.trim()) {
-        const result = await window.electronAPI.createFile(fileName.trim());
-        if (result) {
-          // プロジェクトデータを再読み込み
-          const updatedProject = await window.electronAPI.getProjectData();
-          if (updatedProject) {
-            setProjectData(updatedProject);
-            // 新しく作成されたファイルを選択
-            const newFile = findFileByName(updatedProject.nodes, fileName.trim());
-            if (newFile) {
-              await handleFileSelect(newFile);
-            }
-          }
-        }
+      setIsLoading(true);
+      const updatedProject = await window.electronAPI.getProjectData();
+      if (updatedProject) {
+        setProjectData(updatedProject);
       }
     } catch (error) {
-      console.error('Failed to create file:', error);
+      console.error('Failed to refresh project:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -333,6 +468,10 @@ const App: React.FC = () => {
             onOpenProject={handleOpenProject}
             onCreateFolder={handleCreateFolder}
             onCreateFile={handleCreateFile}
+            onCreateFolderInPath={handleCreateFolderInPath}
+            onCreateFileInPath={handleCreateFileInPath}
+            onCreateFileInSameDirectory={handleCreateFileInSameDirectory}
+            onRefresh={handleRefresh}
             projectPath={projectData?.projectPath}
           />
           
@@ -379,6 +518,17 @@ const App: React.FC = () => {
         noText="いいえ"
         cancelText="キャンセル"
       />
+
+      {/* 入力ダイアログ */}
+      {inputDialogConfig && (
+        <InputDialog
+          isOpen={showInputDialog}
+          onClose={() => setShowInputDialog(false)}
+          onConfirm={inputDialogConfig.onConfirm}
+          title={inputDialogConfig.title}
+          placeholder={inputDialogConfig.placeholder}
+        />
+      )}
     </div>
   );
 };

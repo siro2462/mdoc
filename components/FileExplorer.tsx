@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from './Icon';
+import { InlineEdit } from './InlineEdit';
 import type { FileNode } from '../types';
 import { FileType } from '../types';
 
@@ -10,6 +11,10 @@ interface FileExplorerProps {
   onOpenProject?: () => void;
   onCreateFolder?: () => void;
   onCreateFile?: () => void;
+  onCreateFolderInPath?: (folderName: string, parentPath: string) => Promise<void>;
+  onCreateFileInPath?: (fileName: string, parentPath: string) => Promise<void>;
+  onCreateFileInSameDirectory?: (fileName: string, filePath: string) => Promise<void>;
+  onRefresh?: () => void;
   projectPath?: string;
 }
 
@@ -35,9 +40,14 @@ const FileTreeNode: React.FC<{
   node: FileNode;
   activeFile: FileNode | null;
   onFileSelect: (file: FileNode) => void;
+  onCreateFolderInPath?: (folderName: string, parentPath: string) => Promise<void>;
+  onCreateFileInPath?: (fileName: string, parentPath: string) => Promise<void>;
+  onCreateFileInSameDirectory?: (fileName: string, filePath: string) => Promise<void>;
   level: number;
-}> = ({ node, activeFile, onFileSelect, level }) => {
+}> = ({ node, activeFile, onFileSelect, onCreateFolderInPath, onCreateFileInPath, onCreateFileInSameDirectory, level }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
+  const [isCreatingFile, setIsCreatingFile] = useState(false);
   const isFolder = node.type === 'directory';
 
   const handleToggle = () => {
@@ -48,6 +58,49 @@ const FileTreeNode: React.FC<{
     }
   };
 
+  const handleCreateFolder = () => {
+    if (onCreateFolderInPath && isFolder) {
+      setIsCreatingFolder(true);
+    }
+  };
+
+  const handleCreateFile = () => {
+    if (onCreateFileInPath && isFolder) {
+      setIsCreatingFile(true);
+    }
+  };
+
+  const handleFolderConfirm = async (folderName: string) => {
+    if (onCreateFolderInPath) {
+      try {
+        await onCreateFolderInPath(folderName, node.path);
+        // 新しく作成されたフォルダは自動的に開かない
+        // setIsOpen(true); を削除
+      } catch (error) {
+        console.error('Failed to create folder:', error);
+      }
+    }
+    setIsCreatingFolder(false);
+  };
+
+  const handleFileConfirm = async (fileName: string) => {
+    if (onCreateFileInPath) {
+      try {
+        // ファイル名に.md拡張子を強制的に追加
+        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        await onCreateFileInPath(fileNameWithExt, node.path);
+      } catch (error) {
+        console.error('Failed to create file:', error);
+      }
+    }
+    setIsCreatingFile(false);
+  };
+
+  const handleCancel = () => {
+    setIsCreatingFolder(false);
+    setIsCreatingFile(false);
+  };
+
   const isActive = activeFile?.id === node.id;
   const itemBg = isActive
     ? 'bg-light-bg-tertiary dark:bg-dark-bg-tertiary'
@@ -55,13 +108,12 @@ const FileTreeNode: React.FC<{
   const itemTextColor = isActive
     ? 'text-light-text dark:text-dark-text font-medium'
     : 'text-light-text-secondary dark:text-dark-text-secondary';
-  const itemBorder = '';
 
   return (
     <>
       <div
         onClick={handleToggle}
-        className={`flex items-center cursor-pointer px-2 py-1 ${itemBg} ${itemTextColor} hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-colors duration-150`}
+        className={`flex items-center cursor-pointer px-1 py-0.5 ${itemBg} ${itemTextColor} hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary transition-colors duration-150`}
       >
         {/* インデント用スペーサー */}
         <div style={{ width: `${level * 16}px` }} />
@@ -81,9 +133,29 @@ const FileTreeNode: React.FC<{
           )}
         </div>
 
-        {/* ファイル名 */}
-        <span className="truncate text-xs">{node.name}</span>
+        {/* ファイル名またはインライン編集 */}
+        {isCreatingFolder ? (
+          <InlineEdit
+            initialValue="新しいフォルダ"
+            placeholder="フォルダ名を入力"
+            onConfirm={handleFolderConfirm}
+            onCancel={handleCancel}
+            className="text-xs"
+          />
+        ) : isCreatingFile ? (
+          <InlineEdit
+            initialValue="新しいファイル"
+            placeholder="ファイル名を入力（.mdは自動追加）"
+            onConfirm={handleFileConfirm}
+            onCancel={handleCancel}
+            className="text-xs"
+          />
+        ) : (
+          <span className="truncate text-xs">{node.name}</span>
+        )}
       </div>
+      
+
       {isFolder && isOpen && node.children && (
         <div className="overflow-hidden transition-all duration-200 ease-in-out">
           {node.children.map((child) => (
@@ -92,6 +164,9 @@ const FileTreeNode: React.FC<{
               node={child}
               activeFile={activeFile}
               onFileSelect={onFileSelect}
+              onCreateFolderInPath={onCreateFolderInPath}
+              onCreateFileInPath={onCreateFileInPath}
+              onCreateFileInSameDirectory={onCreateFileInSameDirectory}
               level={level + 1}
             />
           ))}
@@ -108,32 +183,106 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   onOpenProject,
   onCreateFolder,
   onCreateFile,
+  onCreateFolderInPath,
+  onCreateFileInPath,
+  onCreateFileInSameDirectory,
+  onRefresh,
   projectPath 
 }) => {
+  const [isCreatingRootFolder, setIsCreatingRootFolder] = useState(false);
+  const [isCreatingRootFile, setIsCreatingRootFile] = useState(false);
+  const [isCreatingFileInSameDir, setIsCreatingFileInSameDir] = useState(false);
+
+  const handleRootFolderConfirm = async (folderName: string) => {
+    if (onCreateFolderInPath && projectPath) {
+      try {
+        await onCreateFolderInPath(folderName, projectPath);
+      } catch (error) {
+        console.error('Failed to create root folder:', error);
+      }
+    }
+    setIsCreatingRootFolder(false);
+  };
+
+  const handleRootFileConfirm = async (fileName: string) => {
+    if (onCreateFileInPath && projectPath) {
+      try {
+        // ファイル名に.md拡張子を強制的に追加
+        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        await onCreateFileInPath(fileNameWithExt, projectPath);
+      } catch (error) {
+        console.error('Failed to create root file:', error);
+      }
+    }
+    setIsCreatingRootFile(false);
+  };
+
+  const handleSameDirFileConfirm = async (fileName: string) => {
+    if (onCreateFileInSameDirectory && activeFile) {
+      try {
+        // ファイル名に.md拡張子を強制的に追加
+        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        await onCreateFileInSameDirectory(fileNameWithExt, activeFile.path);
+      } catch (error) {
+        console.error('Failed to create file in same directory:', error);
+      }
+    }
+    setIsCreatingFileInSameDir(false);
+  };
+
+  const handleRootCancel = () => {
+    setIsCreatingRootFolder(false);
+    setIsCreatingRootFile(false);
+    setIsCreatingFileInSameDir(false);
+  };
   return (
-    <aside className="w-full h-full bg-light-bg-secondary dark:bg-dark-bg-secondary flex flex-col">
+    <aside className="w-full h-full bg-light-bg-secondary dark:bg-dark-bg-secondary flex flex-col group">
       {/* Header */}
-      <div className="flex items-center justify-between p-2">
-        <div className="text-xs uppercase text-light-text-secondary dark:text-dark-text-secondary font-bold">
-          Explorer
-        </div>
-        <div className="flex items-center space-x-1">
-          {onCreateFolder && (
+      <div className="flex items-center justify-between px-2 py-0.5">
+        {/* Project Path */}
+        {projectPath && (
+          <div className="text-xs text-light-text-secondary dark:text-dark-text-secondary">
+            <div className="truncate" title={projectPath}>
+              {projectPath.split(/[/\\]/).pop() || projectPath}
+            </div>
+          </div>
+        )}
+        
+        {/* Buttons */}
+        <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          {onCreateFolderInPath && (
             <button
-              onClick={onCreateFolder}
+              onClick={() => setIsCreatingRootFolder(true)}
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="New Folder"
             >
               <Icon name="new-folder" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           )}
-          {onCreateFile && (
+          {activeFile && onCreateFileInSameDirectory ? (
             <button
-              onClick={onCreateFile}
+              onClick={() => setIsCreatingFileInSameDir(true)}
+              className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
+              title="New File in Same Directory"
+            >
+              <Icon name="new-file" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
+            </button>
+          ) : onCreateFileInPath ? (
+            <button
+              onClick={() => setIsCreatingRootFile(true)}
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="New File"
             >
               <Icon name="new-file" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
+            </button>
+          ) : null}
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
+              title="Refresh"
+            >
+              <Icon name="loading" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           )}
           {onOpenProject && (
@@ -148,17 +297,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         </div>
       </div>
 
-      {/* Project Path */}
-      {projectPath && (
-        <div className="px-2 py-1 text-xs text-light-text-secondary dark:text-dark-text-secondary">
-          <div className="truncate" title={projectPath}>
-            {projectPath.split(/[/\\]/).pop() || projectPath}
-          </div>
-        </div>
-      )}
-
       {/* File Tree */}
-      <div className="flex-grow overflow-y-auto scrollbar-auto-hide p-2">
+      <div className="flex-grow overflow-y-auto scrollbar-auto-hide px-2">
         {files.length === 0 ? (
           <div className="text-center py-8 text-light-text-secondary dark:text-dark-text-secondary">
             <Icon name="folder-opened" className="w-12 h-12 mx-auto mb-2 opacity-50 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -173,14 +313,63 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             )}
           </div>
         ) : (
-          <div className="space-y-0.5">
+          <div className="space-y-0">
+            {/* Root level inline editing */}
+            {isCreatingRootFolder && (
+              <div className="flex items-center px-1 py-0.5">
+                <div className="w-4 h-4 mr-2 flex items-center justify-center">
+                  <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
+                </div>
+                <InlineEdit
+                  initialValue="新しいフォルダ"
+                  placeholder="フォルダ名を入力"
+                  onConfirm={handleRootFolderConfirm}
+                  onCancel={handleRootCancel}
+                  className="text-xs"
+                />
+              </div>
+            )}
+            
+            {isCreatingRootFile && (
+              <div className="flex items-center px-1 py-0.5">
+                <div className="w-4 h-4 mr-2 flex items-center justify-center">
+                  <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
+                </div>
+                <InlineEdit
+                  initialValue="新しいファイル"
+                  placeholder="ファイル名を入力（.mdは自動追加）"
+                  onConfirm={handleRootFileConfirm}
+                  onCancel={handleRootCancel}
+                  className="text-xs"
+                />
+              </div>
+            )}
+            
+            {isCreatingFileInSameDir && (
+              <div className="flex items-center px-1 py-0.5">
+                <div className="w-4 h-4 mr-2 flex items-center justify-center">
+                  <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
+                </div>
+                <InlineEdit
+                  initialValue="新しいファイル"
+                  placeholder="ファイル名を入力（.mdは自動追加）"
+                  onConfirm={handleSameDirFileConfirm}
+                  onCancel={handleRootCancel}
+                  className="text-xs"
+                />
+              </div>
+            )}
+            
             {files.map((file) => (
               <FileTreeNode 
                 key={file.id} 
                 node={file} 
                 activeFile={activeFile} 
-                onFileSelect={onFileSelect} 
-                level={0} 
+                onFileSelect={onFileSelect}
+                onCreateFolderInPath={onCreateFolderInPath}
+                onCreateFileInPath={onCreateFileInPath}
+                onCreateFileInSameDirectory={onCreateFileInSameDirectory}
+                level={0}
               />
             ))}
           </div>
