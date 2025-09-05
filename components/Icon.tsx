@@ -1,23 +1,29 @@
 import React from 'react';
 
 // アイコンを静的にインポート
-import ChevronDownIcon from '../src/assets/icons/chevron-down.svg?react';
-import ChevronRightIcon from '../src/assets/icons/chevron-right.svg?react';
-import ChromeCloseIcon from '../src/assets/icons/chrome-close.svg?react';
-import ChromeMaximizeIcon from '../src/assets/icons/chrome-maximize.svg?react';
-import ChromeMinimizeIcon from '../src/assets/icons/chrome-minimize.svg?react';
-import ColorModeIcon from '../src/assets/icons/color-mode.svg?react';
-import ExportIcon from '../src/assets/icons/export.svg?react';
-import FileIcon from '../src/assets/icons/file.svg?react';
-import FolderOpenedIcon from '../src/assets/icons/folder-opened.svg?react';
-import FolderIcon from '../src/assets/icons/folder.svg?react';
-import LoadingIcon from '../src/assets/icons/loading.svg?react';
-import MarkdownIcon from '../src/assets/icons/markdown.svg?react';
-import NewFileIcon from '../src/assets/icons/new-file.svg?react';
-import NewFolderIcon from '../src/assets/icons/new-folder.svg?react';
-import SaveIcon from '../src/assets/icons/save.svg?react';
-import ThreeBarsIcon from '../src/assets/icons/three-bars.svg?react';
-import WarningIcon from '../src/assets/icons/warning.svg?react';
+import ChevronDownIcon from '../public/icons/chevron-down.svg?react';
+import ChevronRightIcon from '../public/icons/chevron-right.svg?react';
+import ChromeCloseIcon from '../public/icons/chrome-close.svg?react';
+import ChromeMaximizeIcon from '../public/icons/chrome-maximize.svg?react';
+import ChromeMinimizeIcon from '../public/icons/chrome-minimize.svg?react';
+import ColorModeIcon from '../public/icons/color-mode.svg?react';
+import ExportIcon from '../public/icons/export.svg?react';
+import FileIcon from '../public/icons/file.svg?react';
+import FolderOpenedIcon from '../public/icons/folder-opened.svg?react';
+import FolderIcon from '../public/icons/folder.svg?react';
+import LoadingIcon from '../public/icons/loading.svg?react';
+import MarkdownIcon from '../public/icons/markdown.svg?react';
+import NewFileIcon from '../public/icons/new-file.svg?react';
+import NewFolderIcon from '../public/icons/new-folder.svg?react';
+import SaveIcon from '../public/icons/save.svg?react';
+import ThreeBarsIcon from '../public/icons/three-bars.svg?react';
+import WarningIcon from '../public/icons/warning.svg?react';
+import ArrowDownIcon from '../public/icons/arrow-down.svg?react';
+import ArrowUpIcon from '../public/icons/arrow-up.svg?react';
+import ReplaceAllIcon from '../public/icons/replace-all.svg?react';
+import ReplaceIcon from '../public/icons/replace.svg?react';
+import SearchIcon from '../public/icons/search.svg?react';
+import RefreshIcon from '../public/icons/refresh.svg?react';
 
 // アイコンマップ - セキュリティのため、許可されたアイコンのみを定義
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -38,6 +44,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   'save': SaveIcon,
   'three-bars': ThreeBarsIcon,
   'warning': WarningIcon,
+  'arrow-down': ArrowDownIcon,
+  'arrow-up': ArrowUpIcon,
+  'replace-all': ReplaceAllIcon,
+  'replace': ReplaceIcon,
+  'search': SearchIcon,
+  'refresh': RefreshIcon,
 };
 
 interface IconProps {

@@ -282,7 +282,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
               title="Refresh"
             >
-              <Icon name="loading" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
+              <Icon name="refresh" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           )}
           {onOpenProject && (
