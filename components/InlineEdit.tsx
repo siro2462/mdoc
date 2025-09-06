@@ -21,8 +21,12 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 }) => {
   const [value, setValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasCancelledRef = useRef(false);
 
   useEffect(() => {
+    // コンポーネントがマウントされた時にキャンセル状態をリセット
+    hasCancelledRef.current = false;
+    
     if (autoFocus && inputRef.current) {
       inputRef.current.focus();
       if (selectOnFocus) {
@@ -32,25 +36,23 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
   }, [autoFocus, selectOnFocus]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (hasCancelledRef.current) return;
+    
     if (e.key === 'Enter') {
       e.preventDefault();
-      const trimmedValue = value.trim();
-      if (trimmedValue) {
-        onConfirm(trimmedValue);
-      } else {
-        onCancel();
-      }
+      // VSCode仕様: Enterを押した場合は空の名前でも作成する
+      onConfirm(value.trim());
     } else if (e.key === 'Escape') {
       e.preventDefault();
+      hasCancelledRef.current = true;
       onCancel();
     }
   };
 
   const handleBlur = () => {
-    const trimmedValue = value.trim();
-    if (trimmedValue) {
-      onConfirm(trimmedValue);
-    } else {
+    // VSCode仕様: フォーカスを外したら無条件キャンセル
+    if (!hasCancelledRef.current) {
+      hasCancelledRef.current = true;
       onCancel();
     }
   };

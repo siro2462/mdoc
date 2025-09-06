@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Icon } from './Icon';
 import { InlineEdit } from './InlineEdit';
 import type { FileNode } from '../types';
@@ -59,13 +59,13 @@ const FileTreeNode: React.FC<{
   };
 
   const handleCreateFolder = () => {
-    if (onCreateFolderInPath && isFolder) {
+    if (onCreateFolderInPath && isFolder && !isCreatingFolder && !isCreatingFile) {
       setIsCreatingFolder(true);
     }
   };
 
   const handleCreateFile = () => {
-    if (onCreateFileInPath && isFolder) {
+    if (onCreateFileInPath && isFolder && !isCreatingFolder && !isCreatingFile) {
       setIsCreatingFile(true);
     }
   };
@@ -73,11 +73,13 @@ const FileTreeNode: React.FC<{
   const handleFolderConfirm = async (folderName: string) => {
     if (onCreateFolderInPath) {
       try {
-        await onCreateFolderInPath(folderName, node.path);
+        // VSCode仕様: 空の名前でもそのまま作成
+        await onCreateFolderInPath(folderName.trim(), node.path);
         // 新しく作成されたフォルダは自動的に開かない
         // setIsOpen(true); を削除
       } catch (error) {
         console.error('Failed to create folder:', error);
+        // エラーが発生した場合も編集モードを終了（ロック状態を防ぐ）
       }
     }
     setIsCreatingFolder(false);
@@ -86,11 +88,14 @@ const FileTreeNode: React.FC<{
   const handleFileConfirm = async (fileName: string) => {
     if (onCreateFileInPath) {
       try {
-        // ファイル名に.md拡張子を強制的に追加
-        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        // VSCode仕様: 空の名前でもそのまま作成
+        const trimmedName = fileName.trim();
+        // ファイル名に.md拡張子を強制的に追加（空の名前の場合は.mdのみ）
+        const fileNameWithExt = trimmedName.endsWith('.md') ? trimmedName : `${trimmedName}.md`;
         await onCreateFileInPath(fileNameWithExt, node.path);
       } catch (error) {
         console.error('Failed to create file:', error);
+        // エラーが発生した場合も編集モードを終了（ロック状態を防ぐ）
       }
     }
     setIsCreatingFile(false);
@@ -136,7 +141,7 @@ const FileTreeNode: React.FC<{
         {/* ファイル名またはインライン編集 */}
         {isCreatingFolder ? (
           <InlineEdit
-            initialValue="新しいフォルダ"
+            initialValue=""
             placeholder="フォルダ名を入力"
             onConfirm={handleFolderConfirm}
             onCancel={handleCancel}
@@ -144,7 +149,7 @@ const FileTreeNode: React.FC<{
           />
         ) : isCreatingFile ? (
           <InlineEdit
-            initialValue="新しいファイル"
+            initialValue=""
             placeholder="ファイル名を入力（.mdは自動追加）"
             onConfirm={handleFileConfirm}
             onCancel={handleCancel}
@@ -192,13 +197,16 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   const [isCreatingRootFolder, setIsCreatingRootFolder] = useState(false);
   const [isCreatingRootFile, setIsCreatingRootFile] = useState(false);
   const [isCreatingFileInSameDir, setIsCreatingFileInSameDir] = useState(false);
+  const lastClickTimeRef = useRef<number>(0);
 
   const handleRootFolderConfirm = async (folderName: string) => {
     if (onCreateFolderInPath && projectPath) {
       try {
-        await onCreateFolderInPath(folderName, projectPath);
+        // VSCode仕様: 空の名前でもそのまま作成
+        await onCreateFolderInPath(folderName.trim(), projectPath);
       } catch (error) {
         console.error('Failed to create root folder:', error);
+        // エラーが発生した場合も編集モードを終了（ロック状態を防ぐ）
       }
     }
     setIsCreatingRootFolder(false);
@@ -207,11 +215,14 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   const handleRootFileConfirm = async (fileName: string) => {
     if (onCreateFileInPath && projectPath) {
       try {
-        // ファイル名に.md拡張子を強制的に追加
-        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        // VSCode仕様: 空の名前でもそのまま作成
+        const trimmedName = fileName.trim();
+        // ファイル名に.md拡張子を強制的に追加（空の名前の場合は.mdのみ）
+        const fileNameWithExt = trimmedName.endsWith('.md') ? trimmedName : `${trimmedName}.md`;
         await onCreateFileInPath(fileNameWithExt, projectPath);
       } catch (error) {
         console.error('Failed to create root file:', error);
+        // エラーが発生した場合も編集モードを終了（ロック状態を防ぐ）
       }
     }
     setIsCreatingRootFile(false);
@@ -220,11 +231,14 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   const handleSameDirFileConfirm = async (fileName: string) => {
     if (onCreateFileInSameDirectory && activeFile) {
       try {
-        // ファイル名に.md拡張子を強制的に追加
-        const fileNameWithExt = fileName.endsWith('.md') ? fileName : `${fileName}.md`;
+        // VSCode仕様: 空の名前でもそのまま作成
+        const trimmedName = fileName.trim();
+        // ファイル名に.md拡張子を強制的に追加（空の名前の場合は.mdのみ）
+        const fileNameWithExt = trimmedName.endsWith('.md') ? trimmedName : `${trimmedName}.md`;
         await onCreateFileInSameDirectory(fileNameWithExt, activeFile.path);
       } catch (error) {
         console.error('Failed to create file in same directory:', error);
+        // エラーが発生した場合も編集モードを終了（ロック状態を防ぐ）
       }
     }
     setIsCreatingFileInSameDir(false);
@@ -252,8 +266,27 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           {onCreateFolderInPath && (
             <button
-              onClick={() => setIsCreatingRootFolder(true)}
-              className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
+              onClick={() => {
+                const now = Date.now();
+                // デバウンス: 500ms以内の連続クリックを無視
+                if (now - lastClickTimeRef.current < 500) return;
+                lastClickTimeRef.current = now;
+                
+                // VSCode仕様: 既にフォルダ作成モードがアクティブな場合は何もしない（入力画面をそのまま表示）
+                // 他の作成モードがアクティブな場合は何もしない
+                if (isCreatingRootFile || isCreatingFileInSameDir) return;
+                
+                // フォルダ作成モードを開始（既にアクティブな場合は何もしない）
+                if (!isCreatingRootFolder) {
+                  setIsCreatingRootFolder(true);
+                }
+              }}
+              disabled={isCreatingRootFile || isCreatingFileInSameDir}
+              className={`p-1 rounded transition-colors ${
+                isCreatingRootFile || isCreatingFileInSameDir
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary'
+              }`}
               title="New Folder"
             >
               <Icon name="new-folder" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -261,16 +294,54 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           )}
           {activeFile && onCreateFileInSameDirectory ? (
             <button
-              onClick={() => setIsCreatingFileInSameDir(true)}
-              className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
+              onClick={() => {
+                const now = Date.now();
+                // デバウンス: 500ms以内の連続クリックを無視
+                if (now - lastClickTimeRef.current < 500) return;
+                lastClickTimeRef.current = now;
+                
+                // VSCode仕様: 既に同じディレクトリファイル作成モードがアクティブな場合は何もしない（入力画面をそのまま表示）
+                // 他の作成モードがアクティブな場合は何もしない
+                if (isCreatingRootFolder || isCreatingRootFile) return;
+                
+                // 同じディレクトリファイル作成モードを開始（既にアクティブな場合は何もしない）
+                if (!isCreatingFileInSameDir) {
+                  setIsCreatingFileInSameDir(true);
+                }
+              }}
+              disabled={isCreatingRootFolder || isCreatingRootFile}
+              className={`p-1 rounded transition-colors ${
+                isCreatingRootFolder || isCreatingRootFile
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary'
+              }`}
               title="New File in Same Directory"
             >
               <Icon name="new-file" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
             </button>
           ) : onCreateFileInPath ? (
             <button
-              onClick={() => setIsCreatingRootFile(true)}
-              className="p-1 rounded hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary"
+              onClick={() => {
+                const now = Date.now();
+                // デバウンス: 500ms以内の連続クリックを無視
+                if (now - lastClickTimeRef.current < 500) return;
+                lastClickTimeRef.current = now;
+                
+                // VSCode仕様: 既にルートファイル作成モードがアクティブな場合は何もしない（入力画面をそのまま表示）
+                // 他の作成モードがアクティブな場合は何もしない
+                if (isCreatingRootFolder || isCreatingFileInSameDir) return;
+                
+                // ルートファイル作成モードを開始（既にアクティブな場合は何もしない）
+                if (!isCreatingRootFile) {
+                  setIsCreatingRootFile(true);
+                }
+              }}
+              disabled={isCreatingRootFolder || isCreatingFileInSameDir}
+              className={`p-1 rounded transition-colors ${
+                isCreatingRootFolder || isCreatingFileInSameDir
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:bg-light-bg-tertiary dark:hover:bg-dark-bg-tertiary'
+              }`}
               title="New File"
             >
               <Icon name="new-file" className="w-4 h-4 text-light-text-secondary dark:text-dark-text-secondary" />
@@ -321,7 +392,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                   <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
                 </div>
                 <InlineEdit
-                  initialValue="新しいフォルダ"
+                  initialValue=""
                   placeholder="フォルダ名を入力"
                   onConfirm={handleRootFolderConfirm}
                   onCancel={handleRootCancel}
@@ -336,7 +407,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                   <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
                 </div>
                 <InlineEdit
-                  initialValue="新しいファイル"
+                  initialValue=""
                   placeholder="ファイル名を入力（.mdは自動追加）"
                   onConfirm={handleRootFileConfirm}
                   onCancel={handleRootCancel}
@@ -351,7 +422,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                   <Icon name="chevron-right" className="w-3 h-3 text-light-text-secondary dark:text-dark-text-secondary" />
                 </div>
                 <InlineEdit
-                  initialValue="新しいファイル"
+                  initialValue=""
                   placeholder="ファイル名を入力（.mdは自動追加）"
                   onConfirm={handleSameDirFileConfirm}
                   onCancel={handleRootCancel}

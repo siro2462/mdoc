@@ -196,11 +196,12 @@ const App: React.FC = () => {
           setProjectData(updatedProject);
         }
       } else {
-        alert(`Failed to create folder: ${result.error}`);
+        // エラーメッセージは表示せず、単純にキャンセル
+        console.error('Failed to create folder:', result.error);
       }
     } catch (error) {
       console.error('Failed to create folder:', error);
-      alert('Failed to create folder. Please try again.');
+      // エラーメッセージは表示せず、単純にキャンセル
     }
   };
 
@@ -261,11 +262,12 @@ const App: React.FC = () => {
           }
         }
       } else {
-        alert(`Failed to create file: ${result.error}`);
+        // エラーメッセージは表示せず、単純にキャンセル
+        console.error('Failed to create file:', result.error);
       }
     } catch (error) {
       console.error('Failed to create file:', error);
-      alert('Failed to create file. Please try again.');
+      // エラーメッセージは表示せず、単純にキャンセル
     }
   };
 
@@ -299,11 +301,12 @@ const App: React.FC = () => {
           }
         }
       } else {
-        alert(`Failed to create file: ${result.error}`);
+        // エラーメッセージは表示せず、単純にキャンセル
+        console.error('Failed to create file:', result.error);
       }
     } catch (error) {
       console.error('Failed to create file in same directory:', error);
-      alert('Failed to create file. Please try again.');
+      // エラーメッセージは表示せず、単純にキャンセル
     }
   };
 
